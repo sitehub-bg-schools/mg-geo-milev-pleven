@@ -228,6 +228,15 @@ the history page only — homage to his journal mastheads. Don't spread it.
 
 ### Color — "Ink & Spectrum"
 
+> **DECISION (2026-05-30): keep the current scheme.** The school chose to retain
+> the existing **brand blue + amber accent** (and white/slate backgrounds) rather
+> than adopt "Ink & Spectrum." The proposal below is kept for the record only;
+> the implementation plan (`docs/superpowers/plans/2026-05-30-site-evolution.md`)
+> uses the current palette. Everything else in this aesthetic direction
+> (typography, the coordinate-plane device, photography, anti-slop guardrails)
+> still applies; the calculator/medal "highlight" states use **amber** instead of
+> flame-red.
+
 Blue+gold is the most common institutional palette on earth; it reads generic no
 matter how confidently deployed. Instead:
 
