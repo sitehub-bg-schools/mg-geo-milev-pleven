@@ -116,14 +116,21 @@ Faithful copy of `pleven-mg.com/about-us`. Sections:
 - **Gap vs reference:** their Обучение has ~8 sub-pages (графици, учебни планове,
   ИКД, …) — ours is a single page. Decide IA (sub-pages vs. anchored sections).
 
-### 5. Документи `/dokumenti` — ⏳ Placeholder
+### 5. Документи `/dokumenti` — ⏳ Placeholder (stays placeholder by decision)
 
 - **Hero** + 5 category cards, each with a `PendingChip`: Правилници · Учебни
   планове · Бюджет · Профил на купувача · Други. *Source:* inline (anchors only).
-- **Needs from school:** the actual documents (PDFs) per category. Footer links to
-  `#gdpr` / `#etichen-kodeks` anchors that need real sections/entries here.
-- **For designer:** decide list vs. card layout once real docs exist; per-doc
-  metadata (date, type, size).
+- **Decision (2026-05-30): documents go in a separate document management
+  system (DMS), self-hosted — not hardcoded per page.** The reference site has
+  ~45 budget PDFs plus procurement and parents/COVID docs; hand-coding those
+  into pages is the wrong approach. Until the DMS exists, this page and the
+  budget/procurement sections remain honest placeholders. Harvested source URLs
+  for the eventual migration are recorded in `document-migration-manifest.md`.
+- **Needs (DMS):** an admin-managed catalog (category, title, date, file) that
+  the FE renders. Footer links to `#gdpr` / `#etichen-kodeks` anchors that need
+  real entries once the DMS is in place.
+- **For designer:** decide list vs. card layout and per-doc metadata (date,
+  type, size) for the eventual DMS-driven list.
 
 ### 6. Прием `/priem` — ⏳ Placeholder (honest empty state)
 
@@ -175,6 +182,19 @@ Faithful copy of `pleven-mg.com/about-us`. Sections:
 7. **Gallery photos / albums.**
 8. **STEM** content + photos.
 9. **3 external links** to verify: РУО-Плевен, НАОА, Електронни учебници (МОН).
+
+## Documents: separate DMS (decided 2026-05-30)
+
+Documents will be served by a **separate, self-hosted document management
+system**, not coded page-by-page. This spans the platform (admin uploads &
+catalogs documents; the FE renders category lists) rather than this repo alone.
+Pages that are really document lists — Документи (Бюджет, Профил на купувача,
+Правилници, …), Проекти, and the parents/COVID archive — stay as placeholders
+until the DMS exists. Migration source data: `document-migration-manifest.md`.
+
+New pages implied by the reference but **deferred to the DMS** (not built now):
+`/proekti` (Проекти), an Обществен съвет block on /za-nas, and an „Информация за
+родители" archive. Their content is captured in the manifest.
 
 ## Cross-cutting: decisions for the designer
 
