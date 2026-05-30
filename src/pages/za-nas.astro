@@ -4,31 +4,49 @@ import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import PageHero from "../components/PageHero.astro";
 import PendingChip from "../components/PendingChip.astro";
+import Timeline from "../components/Timeline.astro";
 import { school } from "../data/school.ts";
 
-// Roles are intentionally name-free — we surface a "Предстои публикуване"
-// chip per card rather than fabricating personal data.
-//
-// The two ЗД cards use the standard MON role qualifiers ("учебна дейност" vs
-// "административно-стопанска дейност") to differentiate them, and lean on
-// distinct avatar tones (brand-700 vs brand-500) as an extra visual cue.
-const leadership: Array<{
-  role: string;
-  initials: string;
-  tone: "brand" | "brand-soft" | "accent";
-}> = [
-  { role: "Директор", initials: "Д", tone: "brand" },
-  { role: "ЗД, учебна дейност", initials: "ЗД", tone: "brand" },
-  { role: "ЗД, административно-стопанска дейност", initials: "ЗД", tone: "brand-soft" },
-  { role: "Педагогически съветник", initials: "ПС", tone: "accent" },
-  { role: "Председател на Обществения съвет", initials: "ОС", tone: "accent" },
-  { role: "Председател на Училищното настоятелство", initials: "УН", tone: "accent" },
+// Page-local content mirrored from pleven-mg.com/about-us. Kept inline (not in
+// school.ts) because it's specific to this page and not reused elsewhere.
+
+// Училищни психолози — verbatim from the reference, grouped by audience.
+const psychologists = {
+  intro:
+    "Нашите училищни психолози помагат на учениците, учителите и родителите чрез:",
+  groups: [
+    {
+      title: "В индивидуалната работа с учениците",
+      items: [
+        "Предоставят психологически консултации",
+        "Подкрепят личностното развитие",
+        "Помагат при справяне с емоционални и поведенчески трудности",
+      ],
+    },
+    {
+      title: "В подкрепа на учителите",
+      items: [
+        "Обучават ги в техники за справяне с поведението в класната стая",
+        "Съдействат при разрешаване на конфликти",
+        "Консултират за подхода към различни ученици",
+        "Участват в създаването на позитивен психологически климат",
+      ],
+    },
+  ],
+};
+
+// Поздравителни адреси по случай 24 май — placeholder entries; the school's
+// real PDFs aren't in our hands yet, so each carries a "pending" chip instead
+// of a link.
+const greetings = [
+  'Поздравителен адрес от издателство „Клет България"',
+  "Поздравителен адрес от Технически университет — гр. Варна",
 ];
 ---
 
 <BaseLayout
   title="За нас"
-  description={`${school.name} в ${school.city} — кратка история, мисия, ценности и информация за ръководството и колектива на гимназията.`}
+  description={`${school.name} в ${school.city} — мисия, кратка история, училищни психолози и педагогически състав на гимназията.`}
 >
   <Header />
 
@@ -36,82 +54,139 @@ const leadership: Array<{
     <PageHero
       eyebrow="За нас"
       title="Кои сме ние"
-      lede={`${school.name} в ${school.city} е училище с дългогодишни традиции в подготовката по математика, природни науки и информационни технологии. В тази секция ще намерите кратка история, мисията и ценностите на институцията, както и информация за ръководството и колектива.`}
+      lede={school.about.intro}
     />
 
+    {/* История + closing tagline */}
     <section class="container py-12 sm:py-16">
-      <h2 class="font-display text-2xl font-bold sm:text-3xl">
-        Кратка история
-      </h2>
-      <ol class="mt-8 space-y-6 border-l border-slate-200 pl-6">
-        {
-          school.history.map((milestone) => (
-            <li class="relative">
-              <span
-                class="absolute -left-[31px] flex h-4 w-4 items-center justify-center rounded-full bg-brand-700 ring-4 ring-white"
-                aria-hidden="true"
-              />
-              <p class="font-display text-lg font-bold text-brand-700">
-                {milestone.year}
-              </p>
-              <p class="mt-1 text-slate-700">{milestone.event}</p>
-            </li>
-          ))
-        }
-      </ol>
+      <div class="grid gap-10 lg:grid-cols-2 lg:gap-16">
+        <div>
+          <h2 class="font-display text-2xl font-bold sm:text-3xl">
+            Кратка история
+          </h2>
+          <div class="mt-8">
+            <Timeline items={school.history} />
+          </div>
+        </div>
+        <div class="lg:pt-4">
+          <div
+            class="rounded-2xl bg-brand-700 p-8 text-white shadow-sm sm:p-10"
+          >
+            <p class="font-display text-xl font-bold leading-snug sm:text-2xl">
+              {school.about.closingTagline}
+            </p>
+            <p class="mt-4 text-sm text-brand-100">
+              {school.taglines.secondary}.
+            </p>
+          </div>
+        </div>
+      </div>
     </section>
 
-    {/* Leadership grid — names intentionally absent until officially supplied. */}
+    {/* Училищни психолози */}
     <section class="border-t border-slate-200 bg-slate-50">
       <div class="container py-12 sm:py-16">
-        <div class="flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <p class="text-sm font-semibold uppercase tracking-wider text-brand-700">
-              Ръководство
-            </p>
-            <h2 class="mt-3 font-display text-2xl font-bold sm:text-3xl">
-              Екип на гимназията
-            </h2>
-          </div>
-          <p class="max-w-md text-sm text-slate-600">
-            Имената и кратките визитки ще бъдат добавени след официално
-            потвърждение от училището.
-          </p>
-        </div>
+        <p class="text-sm font-semibold uppercase tracking-wider text-brand-700">
+          Подкрепа
+        </p>
+        <h2 class="mt-3 font-display text-2xl font-bold sm:text-3xl">
+          Училищни психолози
+        </h2>
+        <p class="mt-4 max-w-3xl text-slate-700">{psychologists.intro}</p>
 
-        <ul
-          class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3"
-          aria-label="Ръководен състав на училището"
-        >
+        <div class="mt-8 grid gap-6 md:grid-cols-2">
           {
-            leadership.map((member) => {
-              const avatarClasses =
-                member.tone === "brand"
-                  ? "bg-brand-700 text-white"
-                  : member.tone === "brand-soft"
-                    ? "bg-brand-500 text-white"
-                    : "bg-accent-500 text-slate-900";
-              return (
-                <li class="flex h-full flex-col rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-                  <div class="flex items-center gap-4">
-                    <span
-                      class={`inline-flex h-14 w-14 shrink-0 items-center justify-center rounded-lg font-display text-lg font-bold tracking-tight ${avatarClasses}`}
-                      aria-hidden="true"
+            psychologists.groups.map((group) => (
+              <div class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+                <h3 class="text-base font-semibold text-slate-900">
+                  {group.title}
+                </h3>
+                <ul class="mt-4 space-y-3">
+                  {group.items.map((item) => (
+                    <li class="flex gap-3 text-sm leading-relaxed text-slate-700">
+                      <span
+                        class="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-500"
+                        aria-hidden="true"
+                      />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    {/* Педагогически състав 2025/2026 — pending note + link slot */}
+    <section class="container py-12 sm:py-16">
+      <div class="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <p class="text-sm font-semibold uppercase tracking-wider text-brand-700">
+            Колектив
+          </p>
+          <h2 class="mt-3 font-display text-2xl font-bold sm:text-3xl">
+            Педагогически състав, учебна 2025/2026 година
+          </h2>
+        </div>
+      </div>
+      <div
+        class="mt-8 flex flex-col items-start gap-5 rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-8 sm:flex-row sm:items-center sm:justify-between"
+      >
+        <p class="max-w-2xl text-slate-700">
+          Пълният списък на педагогическия състав за учебната 2025/2026 година
+          ще бъде публикуван тук след официално потвърждение от училището.
+        </p>
+        {/* Link slot — ready for the school's roster document. */}
+        <PendingChip label="Очаквайте документа" class="shrink-0" />
+      </div>
+    </section>
+
+    {/* Поздравителни адреси — 24 май */}
+    <section class="border-t border-slate-200 bg-slate-50">
+      <div class="container py-12 sm:py-16">
+        <p class="text-sm font-semibold uppercase tracking-wider text-brand-700">
+          Отличия и поздрави
+        </p>
+        <h2 class="mt-3 font-display text-2xl font-bold sm:text-3xl">
+          Поздравителни адреси по случай 24 май
+        </h2>
+        <p class="mt-3 max-w-3xl text-sm text-slate-600">
+          Ден на светите братя Кирил и Методий, на българската азбука, просвета
+          и култура и на славянската книжовност.
+        </p>
+
+        <ul class="mt-8 grid gap-4 sm:grid-cols-2">
+          {
+            greetings.map((label) => (
+              <li class="flex items-start justify-between gap-4 rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+                <div class="flex items-start gap-3">
+                  <span
+                    class="mt-0.5 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-700"
+                    aria-hidden="true"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.75"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="h-5 w-5"
                     >
-                      {member.initials}
-                    </span>
-                    <div class="min-w-0">
-                      <h3 class="text-base font-semibold text-slate-900">
-                        {member.role}
-                      </h3>
-                    </div>
-                  </div>
-                  <div class="mt-5 border-t border-slate-100 pt-4">
-                    <PendingChip />
-                  </div>
-                </li>
-              );
-            })
+                      <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+                      <path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2z" />
+                    </svg>
+                  </span>
+                  <span class="text-sm font-medium leading-relaxed text-slate-800">
+                    {label}
+                  </span>
+                </div>
+                <PendingChip label="PDF — очаквайте" class="shrink-0" />
+              </li>
+            ))
           }
         </ul>
       </div>
