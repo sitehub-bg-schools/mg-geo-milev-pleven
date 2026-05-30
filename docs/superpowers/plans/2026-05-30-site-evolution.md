@@ -29,9 +29,10 @@ task-and-acceptance level; each will be expanded into its own task-level plan
 - **D0 — Color scheme: KEEP current** brand blue + amber, white/slate
   backgrounds. (Locked by the user 2026-05-30.) "Ink & Spectrum" is dropped;
   highlight/achievement states use **amber**, not flame-red.
-- **D1 — Typography (OPEN):** keep current Inter/Manrope, *or* adopt the vision's
-  Spectral + Golos Text + Martian Mono. Plan defaults to **keeping Inter/Manrope**;
-  the swap is an isolated optional task (Task 1.5) to flip if you choose.
+- **D1 — Typography (RESOLVED 2026-05-30): adopt** Spectral (display) + Golos
+  Text (body) + Martian Mono (numerals/labels); retire Inter/Manrope. Self-hosted
+  via Fontsource files + `@font-face`, Cyrillic+Latin subsets, `font-display:
+  swap` — same pattern as today, guardrail-safe. Task 1.5 is now in scope.
 - **D2 — Coordinate-plane device (PHASED):** ships as a static, accessible
   data-viz first; the animated "self-drawing curve" is a later enhancement
   (Phase 8), gated on real time-series data.

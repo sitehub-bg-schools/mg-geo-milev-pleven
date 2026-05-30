@@ -18,28 +18,30 @@ export default {
       },
     },
     extend: {
+      // Colours read per-school CSS tokens (src/styles/theme.css) so the site
+      // can be re-skinned by swapping one file — the platform theming layer.
       colors: {
         brand: {
-          50: "#eff6ff",
-          100: "#dbeafe",
-          500: "#2563eb",
-          600: "#1d4ed8",
-          700: "#1e40af",
-          900: "#1e3a8a",
+          50: "rgb(var(--brand-50) / <alpha-value>)",
+          100: "rgb(var(--brand-100) / <alpha-value>)",
+          500: "rgb(var(--brand-500) / <alpha-value>)",
+          600: "rgb(var(--brand-600) / <alpha-value>)",
+          700: "rgb(var(--brand-700) / <alpha-value>)",
+          900: "rgb(var(--brand-900) / <alpha-value>)",
         },
         accent: {
-          50: "#fefce8",
-          100: "#fef9c3",
-          200: "#fde68a",
-          500: "#eab308",
-          600: "#ca8a04",
-          700: "#a16207",
+          50: "rgb(var(--accent-50) / <alpha-value>)",
+          100: "rgb(var(--accent-100) / <alpha-value>)",
+          200: "rgb(var(--accent-200) / <alpha-value>)",
+          500: "rgb(var(--accent-500) / <alpha-value>)",
+          600: "rgb(var(--accent-600) / <alpha-value>)",
+          700: "rgb(var(--accent-700) / <alpha-value>)",
         },
       },
       fontFamily: {
+        // Golos Text — body/UI grotesque (Cyrillic-native)
         sans: [
-          '"Inter"',
-          '"Noto Sans"',
+          '"Golos Text"',
           "system-ui",
           "-apple-system",
           "Segoe UI",
@@ -48,14 +50,15 @@ export default {
           "Arial",
           "sans-serif",
         ],
-        display: [
-          '"Manrope"',
-          '"Inter"',
-          "system-ui",
-          "-apple-system",
-          "Segoe UI",
-          "Roboto",
-          "sans-serif",
+        // Spectral — editorial display serif
+        display: ['"Spectral"', "Georgia", '"Times New Roman"', "serif"],
+        // Martian Mono — numerals, labels, "computation" voice
+        mono: [
+          '"Martian Mono"',
+          "ui-monospace",
+          "SFMono-Regular",
+          "Menlo",
+          "monospace",
         ],
       },
     },
