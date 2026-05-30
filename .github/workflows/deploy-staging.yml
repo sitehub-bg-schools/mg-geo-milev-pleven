@@ -1,0 +1,36 @@
+name: deploy-staging
+
+# Every push to staging rebuilds and deploys the staging site.
+# Served at https://mg-geo-milev-pleven.pages.dev (no custom domain).
+on:
+  push:
+    branches: [staging]
+
+concurrency:
+  group: deploy-staging
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Build
+        env:
+          SITE_URL: https://mg-geo-milev-pleven.pages.dev
+        run: npm run build
+      - name: Mark staging as noindex
+        run: |
+          printf '/*\n  X-Robots-Tag: noindex\n' > dist/_headers
+          printf 'User-agent: *\nDisallow: /\n'   > dist/robots.txt
+      - name: Deploy to Cloudflare Pages (staging)
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy dist --project-name=mg-geo-milev-pleven --branch=staging
