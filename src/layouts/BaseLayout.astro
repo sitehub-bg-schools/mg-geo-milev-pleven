@@ -8,19 +8,54 @@ export interface Props {
   title: string;
   description?: string;
   ogImage?: string;
+  /** "website" (default) or "article" for news pages. */
+  ogType?: string;
+  /** Extra JSON-LD (e.g. NewsArticle) emitted alongside the org schema. */
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
 }
 
 const {
   title,
   description = `${school.name} — ${school.city}. ${school.taglines.primary}`,
-  // Default OG card: 1200×630 brand-gradient SVG with ГМ monogram and
-  // the school's full name. Most modern social platforms accept SVG;
-  // a PNG fallback can be regenerated post-launch via any rasteriser.
-  ogImage = "/og-default.svg",
+  // Rasterized 1200×630 PNG (social platforms reject SVG OG images).
+  // Regenerate from public/og-default.svg via `node scripts/generate-og.mjs`.
+  ogImage = "/og-default.png",
+  ogType = "website",
+  jsonLd,
 } = Astro.props;
 
-const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin).toString();
-const fullTitle = title.includes(school.shortName) ? title : `${title} — ${school.shortName}`;
+const origin = Astro.site ?? new URL(Astro.url.origin);
+const canonical = new URL(Astro.url.pathname, origin).toString();
+const fullTitle = title.includes(school.shortName)
+  ? title
+  : `${title} — ${school.shortName}`;
+const ogImageUrl = new URL(ogImage, origin).toString();
+
+// Staging deploys to *.pages.dev — keep it out of search indexes.
+const isStaging = origin.host.includes("pages.dev");
+
+// Site-wide organisation schema (data from school.ts; geo from /kontakti).
+const orgSchema = {
+  "@context": "https://schema.org",
+  "@type": "EducationalOrganization",
+  name: school.name,
+  alternateName: school.shortName,
+  url: origin.origin,
+  foundingDate: "1957",
+  email: school.contact.email,
+  telephone: school.contact.office[0],
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: school.contact.address,
+    addressLocality: school.city,
+    addressCountry: "BG",
+  },
+  geo: {
+    "@type": "GeoCoordinates",
+    latitude: 43.4248,
+    longitude: 24.5912,
+  },
+};
 ---
 
 <!doctype html>
@@ -31,16 +66,34 @@ const fullTitle = title.includes(school.shortName) ? title : `${title} — ${sch
     <meta name="generator" content={Astro.generator} />
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
+    {isStaging && <meta name="robots" content="noindex, nofollow" />}
     <link rel="canonical" href={canonical} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
-    <meta property="og:type" content="website" />
+    {/* Preload the above-the-fold Cyrillic font weights to cut FOUT/LCP. */}
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      href="/fonts/manrope-cyrillic-700-normal.woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      href="/fonts/inter-cyrillic-400-normal.woff2"
+      crossorigin
+    />
+
+    <meta property="og:type" content={ogType} />
     <meta property="og:locale" content="bg_BG" />
     <meta property="og:site_name" content={school.shortName} />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta property="og:image" content={new URL(ogImage, Astro.site ?? Astro.url.origin).toString()} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content={`${school.name} — ${school.city}`} />
@@ -48,7 +101,14 @@ const fullTitle = title.includes(school.shortName) ? title : `${title} — ${sch
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={fullTitle} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={new URL(ogImage, Astro.site ?? Astro.url.origin).toString()} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    <script type="application/ld+json" set:html={JSON.stringify(orgSchema)} is:inline />
+    {
+      jsonLd && (
+        <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} is:inline />
+      )
+    }
   </head>
   <body class="flex min-h-screen flex-col">
     <a href="#main" class="skip-link">Към съдържанието</a>

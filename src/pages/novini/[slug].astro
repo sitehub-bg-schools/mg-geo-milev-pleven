@@ -4,6 +4,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import Header from "../../components/Header.astro";
 import Footer from "../../components/Footer.astro";
 import { formatNewsDate } from "../../data/news.ts";
+import { school } from "../../data/school.ts";
 
 export async function getStaticPaths() {
   const entries = await getCollection("news");
@@ -16,9 +17,25 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const { Content } = await render(entry);
 const { title, date, category } = entry.data;
+
+const newsSchema = {
+  "@context": "https://schema.org",
+  "@type": "NewsArticle",
+  headline: title,
+  datePublished: date.toISOString(),
+  articleSection: category,
+  inLanguage: "bg",
+  author: { "@type": "EducationalOrganization", name: school.name },
+  publisher: { "@type": "EducationalOrganization", name: school.name },
+};
 ---
 
-<BaseLayout title={title} description={entry.data.excerpt}>
+<BaseLayout
+  title={title}
+  description={entry.data.excerpt}
+  ogType="article"
+  jsonLd={newsSchema}
+>
   <Header />
 
   <main id="main" class="flex-1">

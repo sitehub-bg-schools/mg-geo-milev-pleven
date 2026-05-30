@@ -9,6 +9,7 @@ const SITE_URL = process.env.SITE_URL ?? "https://mg-geo-milev-pleven.sitehub.bg
 export default defineConfig({
   site: SITE_URL,
   integrations: [tailwind(), sitemap()],
+  build: { inlineStylesheets: "always" },
   i18n: {
     defaultLocale: "bg",
     locales: ["bg"],

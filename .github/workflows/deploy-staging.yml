@@ -26,8 +26,8 @@ jobs:
         run: npm run build
       - name: Mark staging as noindex
         run: |
-          printf '/*\n  X-Robots-Tag: noindex\n' > dist/_headers
-          printf 'User-agent: *\nDisallow: /\n'   > dist/robots.txt
+          printf '\n/*\n  X-Robots-Tag: noindex\n' >> dist/_headers
+          printf 'User-agent: *\nDisallow: /\n'      > dist/robots.txt
       - name: Deploy to Cloudflare Pages (staging)
         uses: cloudflare/wrangler-action@v3
         with:

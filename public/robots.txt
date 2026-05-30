@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://mg-geo-milev-pleven.sitehub.bg/sitemap.xml
+Sitemap: https://mg-geo-milev-pleven.sitehub.bg/sitemap-index.xml
