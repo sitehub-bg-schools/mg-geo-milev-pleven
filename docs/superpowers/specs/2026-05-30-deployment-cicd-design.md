@@ -48,19 +48,34 @@ Publish = merge  staging → main
 - The remote currently has **no branches** (nothing pushed yet). Local `master`
   will be renamed to `main`; `staging` is branched from it.
 
+### Branch governance (enforced on GitHub)
+
+- **`main` branch protection:** a pull request is required to merge (0 approvals,
+  so automation can self-merge); direct pushes are blocked; force-pushes and
+  deletion are blocked; the `only-from-staging` status check is required.
+- **`guard-main.yml`:** fails any PR into `main` whose source branch is not
+  `staging`. This is the required check, so code can reach `main` *only* via a
+  PR from `staging`.
+- **`branch-governance` repository ruleset:** blocks creating any new branch and
+  blocks deleting/force-pushing existing ones, so the repo stays at exactly
+  `main` + `staging`. Org admins can bypass.
+
 ### Publish-button contract (future, documented now)
 
-The admin panel's Publish action will be implemented backend-side as:
+Because `main` requires a PR, the admin panel's Publish action is a
+**PR-create-then-merge**, implemented backend-side as:
 
-- **Action:** GitHub API `POST /repos/sitehub-bg-schools/mg-geo-milev-pleven/merges`
-  with `{ "base": "main", "head": "staging" }`.
-- **Effect:** fast-forwards/merges `staging` into `main`, which triggers
-  `deploy-production.yml` via its `push: [main]` trigger.
-- **Progress:** the backend can poll the resulting Actions run
-  (`GET /repos/.../actions/runs`) to surface publish status in the admin UI.
+1. **Open PR:** `POST /repos/sitehub-bg-schools/mg-geo-milev-pleven/pulls`
+   with `{ "base": "main", "head": "staging", "title": "Publish" }`.
+   (If `staging` is already merged/identical, there's nothing to publish.)
+2. **Merge PR:** `PUT /repos/.../pulls/{number}/merge` once the
+   `only-from-staging` check is green (it will be, since head is `staging`).
+   The merge pushes to `main`, triggering `deploy-production.yml`.
+3. **Progress:** poll the resulting Actions run
+   (`GET /repos/.../actions/runs`) to surface publish status in the admin UI.
 - **Auth:** a GitHub App installation token or fine-grained PAT scoped to
-  `contents: write` on the school repo. (Credential management is a backend
-  concern, out of scope here.)
+  `contents: write` + `pull_requests: write` on the school repo. (Credential
+  management is a backend concern, out of scope here.)
 
 `deploy-production.yml` also accepts `workflow_dispatch` so production can be
 triggered manually today (for the initial go-live and for testing) without a
