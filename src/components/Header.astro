@@ -1,6 +1,6 @@
 ---
 import { school } from "../data/school.ts";
-import { primaryNav as navLinks, utilityNav } from "../data/nav.ts";
+import { primaryNav as navLinks } from "../data/nav.ts";
 
 const pathname = Astro.url.pathname.replace(/\/$/, "") || "/";
 
@@ -13,22 +13,6 @@ function isActive(href: string): boolean {
 <header
   class="sticky top-0 z-40 w-full border-b border-slate-200/70 bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/70"
 >
-  {/* Slim utility strip (md+) */}
-  <div class="hidden border-b border-slate-100 bg-slate-50/70 md:block">
-    <div class="container flex h-9 items-center justify-end gap-4 text-xs">
-      {
-        utilityNav.map((link) => (
-          <a
-            href={link.href}
-            class="font-medium text-slate-500 hover:text-brand-700"
-          >
-            {link.label}
-          </a>
-        ))
-      }
-    </div>
-  </div>
-
   <div class="container flex h-16 items-center justify-between gap-4">
     <a
       href="/"
@@ -150,20 +134,6 @@ function isActive(href: string): boolean {
                 </li>
               );
             })
-          }
-        </ul>
-        <ul class="flex flex-col border-t border-slate-100 p-2">
-          {
-            utilityNav.map((link) => (
-              <li>
-                <a
-                  href={link.href}
-                  class="block rounded-md px-3 py-2 text-sm font-medium text-slate-500 hover:bg-brand-50 hover:text-brand-700"
-                >
-                  {link.label}
-                </a>
-              </li>
-            ))
           }
         </ul>
       </nav>

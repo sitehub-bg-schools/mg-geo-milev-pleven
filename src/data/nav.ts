@@ -17,9 +17,3 @@ export const primaryNav: NavItem[] = [
   { href: "/zhivot", label: "Живот в училище" },
   { href: "/kontakti", label: "Контакти" },
 ];
-
-/** Utility items shown in the slim top strip and the mobile menu. */
-export const utilityNav: NavItem[] = [
-  { href: "/turcene", label: "Търсене" },
-  { href: "/uchilishteto/signali", label: "Подай сигнал" },
-];
