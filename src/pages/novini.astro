@@ -1,17 +1,14 @@
 ---
+import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import PageHero from "../components/PageHero.astro";
 import PendingChip from "../components/PendingChip.astro";
-import { sortedNews } from "../data/news.ts";
+import NewsCard from "../components/NewsCard.astro";
+import { sortNews } from "../data/news.ts";
 
-const sorted = sortedNews();
-const dateFormatter = new Intl.DateTimeFormat("bg-BG", {
-  day: "numeric",
-  month: "long",
-  year: "numeric",
-});
+const sorted = sortNews(await getCollection("news"));
 ---
 
 <BaseLayout
@@ -30,49 +27,15 @@ const dateFormatter = new Intl.DateTimeFormat("bg-BG", {
     <section class="container py-12 sm:py-16">
       <ul class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {
-          sorted.map((item) => (
-            <li class="flex h-full flex-col rounded-xl border border-slate-200 bg-white p-6 transition hover:border-brand-500 hover:shadow-sm">
-              {item.kind === "upcoming-event" && (
-                <span class="mb-3 inline-flex w-fit items-center gap-1.5 rounded-full bg-accent-50 px-2.5 py-1 text-xs font-semibold text-accent-700 ring-1 ring-accent-200">
-                  <span
-                    class="h-1.5 w-1.5 rounded-full bg-accent-500"
-                    aria-hidden="true"
-                  />
-                  Предстоящо събитие
-                </span>
-              )}
-              <div class="flex items-center gap-2 text-xs text-slate-500">
-                <time datetime={item.date}>
-                  {dateFormatter.format(new Date(item.date))}
-                </time>
-                {item.category && (
-                  <>
-                    <span aria-hidden="true">•</span>
-                    <span class="font-medium text-brand-700">
-                      {item.category}
-                    </span>
-                  </>
-                )}
-              </div>
-              <h2 class="mt-3 text-lg font-semibold text-slate-900">
-                {item.title}
-              </h2>
-              <p class="mt-2 flex-1 text-sm leading-relaxed text-slate-600">
-                {item.excerpt}
-              </p>
-              <a
-                href="/novini"
-                class="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-brand-700 hover:text-brand-900"
-                aria-label={`Виж повече за: ${item.title}`}
-              >
-                Прочети повече <span aria-hidden="true">→</span>
-              </a>
+          sorted.map((entry) => (
+            <li>
+              <NewsCard entry={entry} />
             </li>
           ))
         }
       </ul>
 
-      {/* Архив — empty-state card matching the vocabulary on /dokumenti. */}
+      {/* Архив — empty-state card. Older posts beyond the current set. */}
       <article
         class="mt-12 flex flex-col gap-4 rounded-xl border border-slate-200 bg-white p-6 shadow-sm sm:flex-row sm:items-center sm:gap-6"
         aria-labelledby="news-archive-title"
@@ -107,8 +70,8 @@ const dateFormatter = new Intl.DateTimeFormat("bg-BG", {
             <PendingChip />
           </div>
           <p class="mt-2 text-sm leading-relaxed text-slate-600">
-            По-стари публикации, индивидуални страници за всяка новина и RSS
-            емисия — в следващи итерации.
+            По-стари публикации от предходни месеци и учебни години ще бъдат
+            пренесени тук постепенно.
           </p>
         </div>
       </article>
