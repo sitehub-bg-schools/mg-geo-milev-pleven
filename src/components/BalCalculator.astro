@@ -1,0 +1,188 @@
+---
+/**
+ * BalCalculator — interactive балообразуване estimator. Accessible-first: it
+ * computes a plain text result into an aria-live region; there is no animation
+ * or canvas. Coefficients/cutoffs come from `admissions.ts` (placeholders for
+ * now) so the result is explicitly indicative.
+ */
+import { admissionProfiles, admissionsYear } from "../data/admissions.ts";
+
+const profilesJson = JSON.stringify(admissionProfiles);
+const first = admissionProfiles[0];
+---
+
+<div
+  class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8"
+  data-bal-calculator
+>
+  <script type="application/json" set:html={profilesJson} data-bal-profiles is:inline></script>
+
+  <h3 class="font-display text-xl font-bold text-slate-900">
+    Калкулатор за бал
+  </h3>
+  <p class="mt-2 text-sm text-slate-600">
+    Ориентировъчно изчисление на бала за прием след 7. клас, учебна {admissionsYear} г.
+  </p>
+
+  <div class="mt-6 grid gap-4 sm:grid-cols-2">
+    <div class="sm:col-span-2">
+      <label for="bal-profile" class="block text-sm font-medium text-slate-700">
+        Профил
+      </label>
+      <select
+        id="bal-profile"
+        class="mt-1 w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-slate-900 focus-visible:ring-2 focus-visible:ring-brand-500"
+      >
+        {admissionProfiles.map((p) => <option value={p.slug}>{p.title}</option>)}
+      </select>
+    </div>
+
+    <div>
+      <label for="bal-bel" class="block text-sm font-medium text-slate-700">
+        НВО Български език и литература (точки, 0–100)
+      </label>
+      <input
+        id="bal-bel"
+        type="number"
+        inputmode="numeric"
+        min="0"
+        max="100"
+        step="0.01"
+        class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-slate-900 focus-visible:ring-2 focus-visible:ring-brand-500"
+      />
+    </div>
+    <div>
+      <label for="bal-mat" class="block text-sm font-medium text-slate-700">
+        НВО Математика (точки, 0–100)
+      </label>
+      <input
+        id="bal-mat"
+        type="number"
+        inputmode="numeric"
+        min="0"
+        max="100"
+        step="0.01"
+        class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-slate-900 focus-visible:ring-2 focus-visible:ring-brand-500"
+      />
+    </div>
+    <div>
+      <label
+        for="bal-gradeA"
+        class="block text-sm font-medium text-slate-700"
+        data-grade-a-label
+      >
+        Оценка по {first.formula.gradeA.subject}
+      </label>
+      <input
+        id="bal-gradeA"
+        type="number"
+        inputmode="decimal"
+        min="2"
+        max="6"
+        step="0.01"
+        class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-slate-900 focus-visible:ring-2 focus-visible:ring-brand-500"
+      />
+    </div>
+    <div>
+      <label
+        for="bal-gradeB"
+        class="block text-sm font-medium text-slate-700"
+        data-grade-b-label
+      >
+        Оценка по {first.formula.gradeB.subject}
+      </label>
+      <input
+        id="bal-gradeB"
+        type="number"
+        inputmode="decimal"
+        min="2"
+        max="6"
+        step="0.01"
+        class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-slate-900 focus-visible:ring-2 focus-visible:ring-brand-500"
+      />
+    </div>
+  </div>
+
+  <p
+    class="mt-6 rounded-lg bg-brand-50 px-4 py-3 font-mono text-sm font-medium text-brand-900"
+    data-bal-result
+    aria-live="polite"
+    role="status"
+  >
+    Въведете точките от НВО и оценките, за да изчислите ориентировъчния бал.
+  </p>
+
+  <p class="mt-3 text-xs text-slate-500">
+    Изчислението е <strong>индикативно и не е официално</strong>. Точните
+    коефициенти и миналогодишните минимални балове ще бъдат потвърдени от
+    училището и публикувани тук.
+  </p>
+</div>
+
+<script>
+  import { computeBal } from "../lib/bal.ts";
+
+  const root = document.querySelector("[data-bal-calculator]");
+  if (root) {
+    const profiles = JSON.parse(
+      root.querySelector("[data-bal-profiles]")?.textContent || "[]",
+    );
+    const $ = (sel: string) => root.querySelector(sel) as HTMLElement | null;
+    const sel = $("#bal-profile") as HTMLSelectElement;
+    const belI = $("#bal-bel") as HTMLInputElement;
+    const matI = $("#bal-mat") as HTMLInputElement;
+    const gAI = $("#bal-gradeA") as HTMLInputElement;
+    const gBI = $("#bal-gradeB") as HTMLInputElement;
+    const gALabel = $("[data-grade-a-label]");
+    const gBLabel = $("[data-grade-b-label]");
+    const out = $("[data-bal-result]");
+
+    const current = () =>
+      profiles.find((p: any) => p.slug === sel.value) || profiles[0];
+
+    const num = (el: HTMLInputElement, min: number, max: number) => {
+      const v = parseFloat(el.value);
+      return Number.isNaN(v) ? null : Math.min(max, Math.max(min, v));
+    };
+
+    function updateLabels() {
+      const p = current();
+      if (gALabel) gALabel.textContent = "Оценка по " + p.formula.gradeA.subject;
+      if (gBLabel) gBLabel.textContent = "Оценка по " + p.formula.gradeB.subject;
+    }
+
+    function recompute() {
+      if (!out) return;
+      const p = current();
+      const bel = num(belI, 0, 100);
+      const mat = num(matI, 0, 100);
+      const ga = num(gAI, 2, 6);
+      const gb = num(gBI, 2, 6);
+      if (bel === null || mat === null || ga === null || gb === null) {
+        out.textContent =
+          "Въведете точките от НВО и оценките, за да изчислите ориентировъчния бал.";
+        return;
+      }
+      const bal = computeBal(p, { nvoBel: bel, nvoMat: mat, gradeA: ga, gradeB: gb });
+      let msg = `Ориентировъчен бал за „${p.title}“: ${bal.toFixed(2)} точки.`;
+      if (p.lastYearCutoff != null) {
+        msg +=
+          bal >= p.lastYearCutoff
+            ? ` Над миналогодишния минимален бал (${p.lastYearCutoff}).`
+            : ` Под миналогодишния минимален бал (${p.lastYearCutoff}).`;
+      } else {
+        msg += " Миналогодишен минимален бал: предстои да бъде публикуван.";
+      }
+      out.textContent = msg;
+    }
+
+    sel.addEventListener("change", () => {
+      updateLabels();
+      recompute();
+    });
+    [belI, matI, gAI, gBI].forEach((el) =>
+      el.addEventListener("input", recompute),
+    );
+    updateLabels();
+  }
+</script>
