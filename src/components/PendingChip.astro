@@ -1,0 +1,29 @@
+---
+/**
+ * PendingChip — small "Предстои публикуване" pill used across empty-state
+ * cards (leadership, СТЕМ, Документи, news archive).
+ *
+ * Visual contract:
+ *   - rounded-full slate-100 bg, slate-600 text
+ *   - 1.5px slate-400 dot prefix (purely decorative)
+ *   - text size: text-xs / font-medium
+ *
+ * Kept dependency-free and class-stable so it survives Tailwind purge
+ * regardless of where it's used.
+ */
+export interface Props {
+  /** Override the default Bulgarian label if a different empty-state needs it. */
+  label?: string;
+  /** Extra utility classes for positional tweaks (e.g. `self-start`, `mt-4`). */
+  class?: string;
+}
+
+const { label = "Предстои публикуване", class: extraClass = "" } = Astro.props;
+---
+
+<span
+  class={`inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600 ${extraClass}`}
+>
+  <span class="h-1.5 w-1.5 rounded-full bg-slate-400" aria-hidden="true"></span>
+  {label}
+</span>

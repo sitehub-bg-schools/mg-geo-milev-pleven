@@ -1,0 +1,63 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import PageHero from "../components/PageHero.astro";
+
+const tiles = Array.from({ length: 12 }, (_, i) => i);
+---
+
+<BaseLayout
+  title="Галерия"
+  description="Снимки и кратки видео материали от събития, олимпиади, ученически проекти и ежедневието в МГ „Гео Милев“ — Плевен."
+>
+  <Header />
+
+  <main id="main" class="flex-1">
+    <PageHero
+      eyebrow="Галерия"
+      title="Моменти от училищния живот"
+      lede="В галерията ще събираме снимки и кратки видео материали от събития, олимпиади, ученически проекти, празници и ежедневието в гимназията."
+    />
+
+    <section class="container py-12 sm:py-16">
+      <ul
+        class="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 sm:gap-4"
+        aria-label="Предстоящи снимки от галерията"
+      >
+        {
+          tiles.map((i) => (
+            <li
+              class="relative aspect-square overflow-hidden rounded-lg bg-gradient-to-br from-brand-50 to-accent-500/10 ring-1 ring-slate-200"
+              aria-hidden="true"
+            >
+              <div class="absolute inset-0 flex items-center justify-center text-brand-700/40">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="h-8 w-8"
+                >
+                  <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+                  <circle cx="12" cy="13" r="4" />
+                </svg>
+              </div>
+              <span class="sr-only">Място за снимка {i + 1}</span>
+            </li>
+          ))
+        }
+      </ul>
+
+      <p class="mx-auto mt-8 max-w-xl text-center text-sm text-slate-600">
+        Галерията се подготвя. Първите албуми ще бъдат публикувани, след като
+        подберем материалите от текущата учебна година.
+      </p>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>

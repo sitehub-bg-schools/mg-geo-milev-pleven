@@ -1,0 +1,122 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import PageHero from "../components/PageHero.astro";
+import PendingChip from "../components/PendingChip.astro";
+import { school } from "../data/school.ts";
+
+// Roles are intentionally name-free — we surface a "Предстои публикуване"
+// chip per card rather than fabricating personal data.
+//
+// The two ЗД cards use the standard MON role qualifiers ("учебна дейност" vs
+// "административно-стопанска дейност") to differentiate them, and lean on
+// distinct avatar tones (brand-700 vs brand-500) as an extra visual cue.
+const leadership: Array<{
+  role: string;
+  initials: string;
+  tone: "brand" | "brand-soft" | "accent";
+}> = [
+  { role: "Директор", initials: "Д", tone: "brand" },
+  { role: "ЗД, учебна дейност", initials: "ЗД", tone: "brand" },
+  { role: "ЗД, административно-стопанска дейност", initials: "ЗД", tone: "brand-soft" },
+  { role: "Педагогически съветник", initials: "ПС", tone: "accent" },
+  { role: "Председател на Обществения съвет", initials: "ОС", tone: "accent" },
+  { role: "Председател на Училищното настоятелство", initials: "УН", tone: "accent" },
+];
+---
+
+<BaseLayout
+  title="За нас"
+  description={`${school.name} в ${school.city} — кратка история, мисия, ценности и информация за ръководството и колектива на гимназията.`}
+>
+  <Header />
+
+  <main id="main" class="flex-1">
+    <PageHero
+      eyebrow="За нас"
+      title="Кои сме ние"
+      lede={`${school.name} в ${school.city} е училище с дългогодишни традиции в подготовката по математика, природни науки и информационни технологии. В тази секция ще намерите кратка история, мисията и ценностите на институцията, както и информация за ръководството и колектива.`}
+    />
+
+    <section class="container py-12 sm:py-16">
+      <h2 class="font-display text-2xl font-bold sm:text-3xl">
+        Кратка история
+      </h2>
+      <ol class="mt-8 space-y-6 border-l border-slate-200 pl-6">
+        {
+          school.history.map((milestone) => (
+            <li class="relative">
+              <span
+                class="absolute -left-[31px] flex h-4 w-4 items-center justify-center rounded-full bg-brand-700 ring-4 ring-white"
+                aria-hidden="true"
+              />
+              <p class="font-display text-lg font-bold text-brand-700">
+                {milestone.year}
+              </p>
+              <p class="mt-1 text-slate-700">{milestone.event}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </section>
+
+    {/* Leadership grid — names intentionally absent until officially supplied. */}
+    <section class="border-t border-slate-200 bg-slate-50">
+      <div class="container py-12 sm:py-16">
+        <div class="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p class="text-sm font-semibold uppercase tracking-wider text-brand-700">
+              Ръководство
+            </p>
+            <h2 class="mt-3 font-display text-2xl font-bold sm:text-3xl">
+              Екип на гимназията
+            </h2>
+          </div>
+          <p class="max-w-md text-sm text-slate-600">
+            Имената и кратките визитки ще бъдат добавени след официално
+            потвърждение от училището.
+          </p>
+        </div>
+
+        <ul
+          class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3"
+          aria-label="Ръководен състав на училището"
+        >
+          {
+            leadership.map((member) => {
+              const avatarClasses =
+                member.tone === "brand"
+                  ? "bg-brand-700 text-white"
+                  : member.tone === "brand-soft"
+                    ? "bg-brand-500 text-white"
+                    : "bg-accent-500 text-slate-900";
+              return (
+                <li class="flex h-full flex-col rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+                  <div class="flex items-center gap-4">
+                    <span
+                      class={`inline-flex h-14 w-14 shrink-0 items-center justify-center rounded-lg font-display text-lg font-bold tracking-tight ${avatarClasses}`}
+                      aria-hidden="true"
+                    >
+                      {member.initials}
+                    </span>
+                    <div class="min-w-0">
+                      <h3 class="text-base font-semibold text-slate-900">
+                        {member.role}
+                      </h3>
+                    </div>
+                  </div>
+                  <div class="mt-5 border-t border-slate-100 pt-4">
+                    <PendingChip />
+                  </div>
+                </li>
+              );
+            })
+          }
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>

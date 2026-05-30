@@ -1,0 +1,56 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import PageHero from "../components/PageHero.astro";
+import PendingChip from "../components/PendingChip.astro";
+---
+
+<BaseLayout
+  title="Прием"
+  description="Прием след 7. клас в МГ „Гео Милев“ — Плевен: профили, балообразуващи предмети, срокове по графика на МОН и необходими документи."
+>
+  <Header />
+
+  <main id="main" class="flex-1">
+    <PageHero
+      eyebrow="Прием"
+      title="Прием след 7. клас"
+      lede="Тази страница ще съдържа подробна информация за приема в гимназията — утвърдени паралелки и брой места, балообразуващи предмети, важни срокове по графика на МОН, необходими документи и стъпки за подаване на заявление."
+    />
+
+    <section class="container py-12 sm:py-16">
+      {/*
+        Honest empty state — replaces the previous skeleton table with
+        blurred rows. Per iter-4 designer review: no fabricated coefficients,
+        no skeleton illusion of imminent content.
+      */}
+      <article
+        class="mx-auto max-w-2xl rounded-xl border border-slate-200 bg-white p-8 shadow-sm"
+        aria-labelledby="priem-pending-title"
+      >
+        <div class="flex flex-wrap items-center gap-3">
+          <h2
+            id="priem-pending-title"
+            class="text-lg font-semibold text-slate-900"
+          >
+            Прием 2026/2027 г.
+          </h2>
+          <PendingChip />
+        </div>
+        <p class="mt-4 text-base leading-relaxed text-slate-700">
+          Конкретните паралелки и балообразуващи предмети за учебната
+          2026/2027 г. ще бъдат публикувани след решение на Педагогическия
+          съвет.
+        </p>
+        <p class="mt-4 text-sm leading-relaxed text-slate-600">
+          Информацията за актуалната кампания по прием ще бъде обявена веднага
+          след официалното ѝ потвърждение от МОН и РУО — Плевен. До тогава
+          можете да се обърнете към канцеларията за допълнителни въпроси.
+        </p>
+      </article>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>

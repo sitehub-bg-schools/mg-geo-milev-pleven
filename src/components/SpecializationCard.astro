@@ -1,0 +1,96 @@
+---
+export type SpecIcon = "sigma" | "atom" | "code" | "leaf";
+
+export interface Props {
+  title: string;
+  description: string;
+  icon?: SpecIcon;
+}
+
+const { title, description, icon } = Astro.props;
+---
+
+<article
+  class="group h-full rounded-xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:border-brand-500 hover:shadow-md"
+>
+  {
+    icon && (
+      <div
+        class="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-brand-50 text-brand-700"
+        aria-hidden="true"
+      >
+        {icon === "sigma" && (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.75"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="h-6 w-6"
+          >
+            {/* Stylised Σ with three data points along the diagonal */}
+            <path d="M17 5H7l5 7-5 7h10" />
+            <circle cx="9" cy="9" r="0.9" fill="currentColor" stroke="none" />
+            <circle cx="12" cy="12" r="0.9" fill="currentColor" stroke="none" />
+            <circle cx="9" cy="15" r="0.9" fill="currentColor" stroke="none" />
+          </svg>
+        )}
+        {icon === "atom" && (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.75"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="h-6 w-6"
+          >
+            {/* Atom: nucleus + two crossed orbital ellipses */}
+            <circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none" />
+            <ellipse cx="12" cy="12" rx="9" ry="3.5" />
+            <ellipse cx="12" cy="12" rx="9" ry="3.5" transform="rotate(60 12 12)" />
+            <ellipse cx="12" cy="12" rx="9" ry="3.5" transform="rotate(120 12 12)" />
+          </svg>
+        )}
+        {icon === "code" && (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.75"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="h-6 w-6"
+          >
+            {/* Code brackets with central slash */}
+            <polyline points="8 7 3 12 8 17" />
+            <polyline points="16 7 21 12 16 17" />
+            <line x1="14" y1="5" x2="10" y2="19" />
+          </svg>
+        )}
+        {icon === "leaf" && (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.75"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="h-6 w-6"
+          >
+            {/* Leaf with central vein */}
+            <path d="M20 4c0 9-7 16-16 16 0-9 7-16 16-16z" />
+            <path d="M4 20c4-4 8-8 16-16" />
+          </svg>
+        )}
+      </div>
+    )
+  }
+  <h3 class="text-lg font-semibold text-slate-900">{title}</h3>
+  <p class="mt-2 text-sm leading-relaxed text-slate-600">{description}</p>
+</article>

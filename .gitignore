@@ -1,0 +1,14 @@
+node_modules/
+dist/
+.astro/
+.env
+.env.local
+.env.production
+.DS_Store
+*.log
+
+# ruflo / agent state — local only, never part of site content
+.swarm/
+.hive-mind/
+ruvector.db
+.claude-flow/

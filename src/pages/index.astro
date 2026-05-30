@@ -1,0 +1,407 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import SpecializationCard from "../components/SpecializationCard.astro";
+import StatBadge from "../components/StatBadge.astro";
+import { school } from "../data/school.ts";
+import { sortedNews } from "../data/news.ts";
+
+const latestNews = sortedNews().slice(0, 3);
+
+const dateFormatter = new Intl.DateTimeFormat("bg-BG", {
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+});
+
+// Keyed by title — explicit, no reliance on array order.
+const specIcons: Record<
+  string,
+  "sigma" | "atom" | "code" | "leaf"
+> = {
+  "Математика и информатика": "sigma",
+  "Математика и физика": "atom",
+  "Софтуерни и хардуерни науки": "code",
+  "Природни науки": "leaf",
+};
+---
+
+<BaseLayout
+  title={`${school.shortName} — ${school.city}`}
+  description={`${school.name} в ${school.city} — профили по математика, природни науки, ИТ и инженерство. ${school.taglines.primary}`}
+>
+  <Header />
+
+  <main id="main" class="flex-1">
+    {/* Hero */}
+    <section
+      class="relative overflow-hidden bg-gradient-to-br from-brand-700 via-brand-600 to-brand-900 text-white"
+    >
+      <div
+        class="pointer-events-none absolute inset-0 opacity-20 [background-image:radial-gradient(circle_at_25%_20%,white_0,transparent_45%),radial-gradient(circle_at_80%_70%,white_0,transparent_40%)]"
+        aria-hidden="true"
+      >
+      </div>
+      <div class="container relative py-16 sm:py-24 lg:py-28">
+        <div class="grid items-center gap-12 md:grid-cols-12 md:gap-10">
+          {/* Left: copy */}
+          <div class="md:col-span-7">
+            {/* Eyebrow pill — carries the compact ГМ identity glyph so the
+                brand mark is anchored across every breakpoint (mobile +
+                desktop), without duplicating the large SVG monogram that
+                appears in the right column at md+. */}
+            <p
+              class="inline-flex items-center gap-2 rounded-full bg-white/10 py-1 pl-1 pr-3 text-xs font-medium uppercase tracking-wider text-brand-100 ring-1 ring-white/20"
+            >
+              <span
+                class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-white/15 ring-1 ring-white/25 font-display text-[0.65rem] font-extrabold tracking-tight text-white"
+                aria-hidden="true"
+              >
+                ГМ
+              </span>
+              <span>{school.city} · от 1957</span>
+            </p>
+            <h1
+              class="mt-3 font-display leading-[1.05] tracking-tight text-3xl sm:text-4xl md:text-5xl lg:text-6xl md:mt-5"
+            >
+              {school.name}
+            </h1>
+            <p class="mt-6 text-lg text-brand-50 sm:text-xl">
+              {school.taglines.primary}
+            </p>
+            <p class="mt-3 text-sm italic text-brand-100">
+              „{school.taglines.horace}“
+              <span class="ml-1 not-italic text-brand-200">— Хораций</span>
+            </p>
+            <div class="mt-8 flex flex-wrap gap-3">
+              <a
+                href="/priem"
+                class="inline-flex items-center justify-center rounded-md bg-accent-500 px-5 py-3 text-sm font-semibold text-slate-900 shadow-sm transition hover:bg-accent-600 focus-visible:ring-offset-brand-700"
+              >
+                Информация за прием
+              </a>
+              <a
+                href="/za-nas"
+                class="inline-flex items-center justify-center rounded-md border border-white/30 bg-white/5 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/10 focus-visible:ring-offset-brand-700"
+              >
+                Опознай училището
+              </a>
+            </div>
+            <p class="mt-6 text-xs uppercase tracking-wider text-brand-200">
+              Гео Милев · 1895–1925 · български поет
+            </p>
+          </div>
+
+          {/* Right: geometric visual (md+) */}
+          <div class="hidden md:col-span-5 md:block">
+            <div class="relative mx-auto aspect-square w-full max-w-md">
+              {/* SVG: concentric rings + ГМ typographic lockup + 1957 mark */}
+              <svg
+                viewBox="0 0 400 400"
+                xmlns="http://www.w3.org/2000/svg"
+                class="absolute inset-0 h-full w-full"
+                role="img"
+                aria-labelledby="hero-svg-title"
+              >
+                <title id="hero-svg-title">МГ Гео Милев — Плевен</title>
+                <defs>
+                  <radialGradient id="heroGlow" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stop-color="#fff" stop-opacity="0.25" />
+                    <stop offset="60%" stop-color="#fff" stop-opacity="0" />
+                  </radialGradient>
+                </defs>
+                <circle cx="200" cy="200" r="180" fill="url(#heroGlow)" />
+                {/* Outer rings — blue/white */}
+                <circle
+                  cx="200"
+                  cy="200"
+                  r="170"
+                  fill="none"
+                  stroke="#ffffff"
+                  stroke-opacity="0.18"
+                  stroke-width="1"
+                />
+                <circle
+                  cx="200"
+                  cy="200"
+                  r="140"
+                  fill="none"
+                  stroke="#ffffff"
+                  stroke-opacity="0.25"
+                  stroke-width="1"
+                />
+                <circle
+                  cx="200"
+                  cy="200"
+                  r="110"
+                  fill="none"
+                  stroke="#ffffff"
+                  stroke-opacity="0.35"
+                  stroke-width="1.5"
+                />
+                {/* Amber accent ring */}
+                <circle
+                  cx="200"
+                  cy="200"
+                  r="80"
+                  fill="none"
+                  stroke="#eab308"
+                  stroke-opacity="0.85"
+                  stroke-width="2"
+                  stroke-dasharray="4 6"
+                />
+                {/* Inner solid disc */}
+                <circle cx="200" cy="200" r="58" fill="#ffffff" fill-opacity="0.08" />
+                {/* Typographic "ГМ" lockup — Manrope, bold, white */}
+                <text
+                  x="200"
+                  y="218"
+                  text-anchor="middle"
+                  font-family="Manrope, Inter, system-ui, sans-serif"
+                  font-weight="800"
+                  font-size="62"
+                  letter-spacing="-2"
+                  fill="#ffffff"
+                >ГМ</text>
+                {/* Vertical 1957 rule, right of monogram */}
+                <line
+                  x1="252"
+                  y1="180"
+                  x2="252"
+                  y2="220"
+                  stroke="#eab308"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                />
+                <text
+                  x="260"
+                  y="205"
+                  font-family="Manrope, Inter, system-ui, sans-serif"
+                  font-weight="700"
+                  font-size="12"
+                  letter-spacing="2"
+                  fill="#eab308"
+                >1957</text>
+                {/* Tick marks on outer ring (clock positions) */}
+                <g stroke="#ffffff" stroke-opacity="0.5" stroke-width="2" stroke-linecap="round">
+                  <line x1="200" y1="20" x2="200" y2="32" />
+                  <line x1="380" y1="200" x2="368" y2="200" />
+                  <line x1="200" y1="380" x2="200" y2="368" />
+                  <line x1="20" y1="200" x2="32" y2="200" />
+                </g>
+                {/* Plovdiv/Pleven north-marker amber dot */}
+                <circle cx="200" cy="20" r="4" fill="#eab308" />
+                {/* Small "Плевен" inscription along bottom */}
+                <text
+                  x="200"
+                  y="358"
+                  text-anchor="middle"
+                  font-family="Manrope, Inter, system-ui, sans-serif"
+                  font-weight="600"
+                  font-size="11"
+                  letter-spacing="6"
+                  fill="#ffffff"
+                  fill-opacity="0.55"
+                >ПЛЕВЕН</text>
+              </svg>
+
+              {/* Floating stat badges (light variant pops on the blue gradient) */}
+              <div class="absolute -left-6 top-6 w-40">
+                <StatBadge
+                  value={`${school.stats.teachers}+`}
+                  label="Преподаватели"
+                  variant="light"
+                />
+              </div>
+              <div class="absolute -right-4 top-1/2 w-40 -translate-y-1/2">
+                <StatBadge
+                  value={`${school.stats.students}+`}
+                  label="Ученици"
+                  variant="light"
+                />
+              </div>
+              <div class="absolute -bottom-2 left-1/2 w-40 -translate-x-1/2">
+                <StatBadge
+                  value={school.specializations.length}
+                  label="Профила"
+                  variant="light"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Stats on mobile only — dark variant on the gradient */}
+        <div
+          class="mt-12 grid grid-cols-2 gap-3 sm:max-w-xl sm:grid-cols-3 md:hidden"
+        >
+          <StatBadge value={`${school.stats.students}+`} label="Ученици" />
+          <StatBadge
+            value={`${school.stats.teachers}+`}
+            label="Преподаватели"
+          />
+          <StatBadge
+            value={school.specializations.length}
+            label="Профила"
+          />
+        </div>
+      </div>
+    </section>
+
+    {/* Кои сме ние */}
+    <section class="container py-16 sm:py-20">
+      <div class="grid gap-10 lg:grid-cols-3 lg:gap-12">
+        <div class="lg:col-span-1">
+          <p class="text-sm font-semibold uppercase tracking-wider text-brand-700">
+            Кои сме ние
+          </p>
+          <h2 class="mt-3 font-display text-3xl font-bold sm:text-4xl">
+            Училище с традиции и поглед напред
+          </h2>
+        </div>
+        <div class="space-y-4 text-base leading-relaxed text-slate-700 lg:col-span-2">
+          <p>
+            {school.name} в {school.city} съчетава дългогодишен опит в подготовката
+            по математика и природни науки със съвременни профили в областта на
+            информационните технологии и инженерството.
+          </p>
+          <p>
+            Учениците ни се развиват в среда, която насърчава любопитството,
+            аналитичното мислене и работата в екип. Гордеем се с успехите им на
+            национални и международни състезания, както и с реализацията им във
+            водещи университети.
+          </p>
+          <p class="font-medium text-brand-700">
+            {school.taglines.motto}
+          </p>
+        </div>
+      </div>
+    </section>
+
+    {/* Specializations */}
+    <section class="bg-slate-50 py-16 sm:py-20">
+      <div class="container">
+        <div class="mx-auto max-w-2xl text-center">
+          <p class="text-sm font-semibold uppercase tracking-wider text-brand-700">
+            Профили
+          </p>
+          <h2 class="mt-3 font-display text-3xl font-bold sm:text-4xl">
+            Какво учим при нас
+          </h2>
+          <p class="mt-4 text-slate-600">
+            Четири профила, които отварят врати към инженерството, природните
+            науки и съвременните технологии.
+          </p>
+        </div>
+        <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {
+            school.specializations.map((spec) => (
+              <SpecializationCard
+                title={spec.title}
+                description={spec.description}
+                icon={specIcons[spec.title]}
+              />
+            ))
+          }
+        </div>
+        <div class="mt-10 text-center">
+          <a
+            href="/obuchenie"
+            class="inline-flex items-center gap-2 text-sm font-semibold text-brand-700 hover:text-brand-900"
+          >
+            Виж цялата програма
+            <span aria-hidden="true">→</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    {/* Latest news */}
+    <section class="container py-16 sm:py-20">
+      <div class="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <p class="text-sm font-semibold uppercase tracking-wider text-brand-700">
+            Новини
+          </p>
+          <h2 class="mt-3 font-display text-3xl font-bold sm:text-4xl">
+            Последно от училището
+          </h2>
+        </div>
+        <a
+          href="/novini"
+          class="text-sm font-semibold text-brand-700 hover:text-brand-900"
+        >
+          Всички новини →
+        </a>
+      </div>
+      <div class="mt-10 grid gap-6 md:grid-cols-3">
+        {
+          latestNews.map((item) => (
+            <article class="flex h-full flex-col rounded-xl border border-slate-200 bg-white p-6 transition hover:border-brand-500 hover:shadow-sm">
+              {item.kind === "upcoming-event" && (
+                <span class="mb-3 inline-flex w-fit items-center gap-1.5 rounded-full bg-accent-50 px-2.5 py-1 text-xs font-semibold text-accent-700 ring-1 ring-accent-200">
+                  <span
+                    class="h-1.5 w-1.5 rounded-full bg-accent-500"
+                    aria-hidden="true"
+                  />
+                  Предстоящо събитие
+                </span>
+              )}
+              <div class="flex items-center gap-2 text-xs text-slate-500">
+                <time datetime={item.date}>
+                  {dateFormatter.format(new Date(item.date))}
+                </time>
+                {item.category && (
+                  <>
+                    <span aria-hidden="true">•</span>
+                    <span class="font-medium text-brand-700">
+                      {item.category}
+                    </span>
+                  </>
+                )}
+              </div>
+              <h3 class="mt-3 text-lg font-semibold text-slate-900">
+                {item.title}
+              </h3>
+              <p class="mt-2 flex-1 text-sm leading-relaxed text-slate-600">
+                {item.excerpt}
+              </p>
+              <a
+                href="/novini"
+                class="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-brand-700 hover:text-brand-900"
+                aria-label={`Виж повече за: ${item.title}`}
+              >
+                Прочети повече <span aria-hidden="true">→</span>
+              </a>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    {/* CTA band */}
+    <section class="bg-brand-700 text-white">
+      <div
+        class="container flex flex-col items-start gap-6 py-12 sm:flex-row sm:items-center sm:justify-between sm:py-16"
+      >
+        <div>
+          <h2 class="font-display text-2xl font-bold sm:text-3xl">
+            Имате въпрос към училището?
+          </h2>
+          <p class="mt-2 text-brand-100">
+            Свържете се с нас — отговаряме в работно време.
+          </p>
+        </div>
+        <a
+          href="/kontakti"
+          class="inline-flex items-center justify-center rounded-md bg-accent-500 px-6 py-3 text-sm font-semibold text-slate-900 transition hover:bg-accent-600 focus-visible:ring-offset-brand-700"
+        >
+          Към контактите
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>

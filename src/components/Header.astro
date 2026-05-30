@@ -1,0 +1,176 @@
+---
+import { school } from "../data/school.ts";
+
+const navLinks = [
+  { href: "/", label: "Начало" },
+  { href: "/za-nas", label: "За нас" },
+  { href: "/novini", label: "Новини" },
+  { href: "/obuchenie", label: "Обучение" },
+  { href: "/dokumenti", label: "Документи" },
+  { href: "/priem", label: "Прием" },
+  { href: "/stem", label: "СТЕМ" },
+  { href: "/galeriya", label: "Галерия" },
+  { href: "/kontakti", label: "Контакти" },
+];
+
+const pathname = Astro.url.pathname.replace(/\/$/, "") || "/";
+
+function isActive(href: string): boolean {
+  if (href === "/") return pathname === "/";
+  return pathname === href || pathname.startsWith(href + "/");
+}
+---
+
+<header
+  class="sticky top-0 z-40 w-full border-b border-slate-200/70 bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/70"
+>
+  <div class="container flex h-16 items-center justify-between gap-4">
+    <a
+      href="/"
+      class="-ml-2 flex min-h-[44px] items-center gap-2 rounded-md px-2 py-1 font-display text-lg font-bold text-brand-700"
+      aria-label={`${school.shortName} — начална страница`}
+    >
+      <span
+        class="inline-flex h-11 w-11 items-center justify-center rounded-md bg-brand-700 text-white text-sm font-bold tracking-tight"
+        aria-hidden="true"
+      >
+        МГ
+      </span>
+      <span class="hidden sm:inline">{school.shortName}</span>
+    </a>
+
+    {/* Desktop nav: md+ */}
+    <nav aria-label="Главна навигация" class="hidden md:block">
+      <ul class="flex items-center gap-1">
+        {
+          navLinks.map((link) => {
+            const active = isActive(link.href);
+            const classes = active
+              ? "nav-link text-sm nav-link-active"
+              : "nav-link text-sm";
+            return (
+              <li>
+                <a
+                  href={link.href}
+                  class={classes}
+                  aria-current={active ? "page" : undefined}
+                >
+                  {link.label}
+                </a>
+              </li>
+            );
+          })
+        }
+      </ul>
+    </nav>
+
+    {/* Mobile nav: < md, pure CSS via <details> with a JS island for Esc/focus */}
+    <details id="mobile-nav" class="relative md:hidden">
+      <summary
+        id="mobile-nav-toggle"
+        class="flex h-11 w-11 cursor-pointer items-center justify-center rounded-md border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 list-none [&::-webkit-details-marker]:hidden"
+        aria-label="Отвори менюто"
+        aria-controls="mobile-nav-panel"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="h-5 w-5"
+          aria-hidden="true"
+        >
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </summary>
+      <nav
+        id="mobile-nav-panel"
+        aria-label="Мобилна навигация"
+        class="absolute right-0 mt-2 w-72 rounded-lg border border-slate-200 bg-white shadow-lg"
+      >
+        <div
+          class="flex items-center justify-between border-b border-slate-100 px-3 py-2"
+        >
+          <span
+            class="text-xs font-semibold uppercase tracking-wider text-slate-500"
+          >
+            Меню
+          </span>
+          <button
+            type="button"
+            data-close-mobile-nav
+            class="flex h-11 w-11 items-center justify-center rounded-md text-slate-600 hover:bg-slate-100"
+            aria-label="Затвори менюто"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="h-5 w-5"
+              aria-hidden="true"
+            >
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+              <line x1="6" y1="18" x2="18" y2="6"></line>
+            </svg>
+          </button>
+        </div>
+        <ul class="flex flex-col p-2">
+          {
+            navLinks.map((link) => {
+              const active = isActive(link.href);
+              const base =
+                "block rounded-md px-3 py-2 text-base font-medium text-slate-700 hover:bg-brand-50 hover:text-brand-700";
+              const classes = active
+                ? `${base} bg-brand-50 text-brand-700`
+                : base;
+              return (
+                <li>
+                  <a
+                    href={link.href}
+                    class={classes}
+                    aria-current={active ? "page" : undefined}
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              );
+            })
+          }
+        </ul>
+      </nav>
+    </details>
+  </div>
+</header>
+
+<script>
+  // Tiny island: Esc closes the mobile nav and returns focus to the toggle.
+  // Also wires up the in-panel close button.
+  const nav = document.getElementById("mobile-nav") as HTMLDetailsElement | null;
+  const toggle = document.getElementById("mobile-nav-toggle");
+  if (nav) {
+    const close = () => {
+      if (nav.open) {
+        nav.open = false;
+        (toggle as HTMLElement | null)?.focus();
+      }
+    };
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") close();
+    });
+    nav.querySelectorAll("[data-close-mobile-nav]").forEach((el) => {
+      el.addEventListener("click", (e) => {
+        e.preventDefault();
+        close();
+      });
+    });
+  }
+</script>

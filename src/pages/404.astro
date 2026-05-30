@@ -1,0 +1,47 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+---
+
+<BaseLayout
+  title="Страницата не е намерена"
+  description="Грешка 404 — търсената страница не съществува или е преместена. Върнете се към началната страница или използвайте менюто."
+>
+  <Header />
+
+  <main id="main" class="flex-1">
+    <section class="container py-20 sm:py-28">
+      <div class="mx-auto max-w-xl text-center">
+        <p
+          class="font-display text-6xl font-bold text-brand-700 sm:text-7xl"
+        >
+          404
+        </p>
+        <h1 class="mt-4 font-display text-2xl font-bold sm:text-3xl">
+          Страницата не е намерена
+        </h1>
+        <p class="mt-3 text-slate-600">
+          Възможно е адресът да е грешен или съдържанието да е преместено.
+          Върнете се към началната страница или използвайте менюто горе.
+        </p>
+        <div class="mt-8 flex flex-wrap justify-center gap-3">
+          <a
+            href="/"
+            class="inline-flex items-center justify-center rounded-md bg-brand-700 px-5 py-3 text-sm font-semibold text-white transition hover:bg-brand-900"
+          >
+            Към началната страница
+          </a>
+          <a
+            href="/kontakti"
+            class="inline-flex items-center justify-center rounded-md border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+          >
+            Контакти
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>

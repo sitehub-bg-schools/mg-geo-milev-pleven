@@ -1,0 +1,162 @@
+---
+import { school } from "../data/school.ts";
+import { externalLinks } from "../config/externalLinks.ts";
+
+const year = new Date().getFullYear();
+
+const institutional: Array<{ href: string; label: string }> = [
+  { href: "/dokumenti#gdpr", label: "ГДПР" },
+  { href: "/dokumenti#etichen-kodeks", label: "Етичен кодекс" },
+  { href: "/dokumenti#profil-na-kupuvacha", label: "Профил на купувача" },
+];
+---
+
+<footer class="mt-auto border-t border-slate-200 bg-slate-50">
+  <div class="container py-12">
+    <div class="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
+      <div>
+        <p class="font-display text-lg font-bold text-brand-700">
+          {school.name}
+        </p>
+        <p class="mt-2 text-sm text-slate-600">
+          {school.contact.address}
+        </p>
+        <p class="mt-4 text-sm text-slate-500">
+          {school.taglines.secondary}
+        </p>
+      </div>
+
+      <div>
+        <h2 class="text-sm font-semibold uppercase tracking-wider text-slate-500">
+          Контакти
+        </h2>
+        <ul class="mt-4 space-y-2 text-sm text-slate-700">
+          <li>
+            <span class="font-medium text-slate-900">Канцелария:</span>
+            <ul class="mt-1 space-y-1">
+              {
+                school.contact.office.map((phone) => (
+                  <li>
+                    <a
+                      href={`tel:${phone.replace(/[\s/]/g, "")}`}
+                      class="hover:text-brand-700"
+                    >
+                      {phone}
+                    </a>
+                  </li>
+                ))
+              }
+            </ul>
+          </li>
+          <li>
+            <span class="font-medium text-slate-900">Директор:</span>{" "}
+            <a
+              href={`tel:${school.contact.director.replace(/[\s/]/g, "")}`}
+              class="hover:text-brand-700"
+            >
+              {school.contact.director}
+            </a>
+          </li>
+          <li>
+            <span class="font-medium text-slate-900">Зам.-директор:</span>{" "}
+            <a
+              href={`tel:${school.contact.deputyDirector.replace(/[\s/]/g, "")}`}
+              class="hover:text-brand-700"
+            >
+              {school.contact.deputyDirector}
+            </a>
+          </li>
+          <li class="pt-2">
+            <a
+              href={`mailto:${school.contact.email}`}
+              class="text-brand-700 hover:text-brand-900 underline underline-offset-2"
+            >
+              {school.contact.email}
+            </a>
+          </li>
+        </ul>
+        <p class="mt-4 text-sm text-slate-700">
+          <span class="font-medium text-slate-900">Работно време:</span>
+          <span class="block">{school.contact.hours}</span>
+        </p>
+      </div>
+
+      <div>
+        <h2 class="text-sm font-semibold uppercase tracking-wider text-slate-500">
+          Институционално
+        </h2>
+        <ul class="mt-4 space-y-1.5 text-sm">
+          {
+            institutional.map((link) => (
+              <li>
+                <a
+                  href={link.href}
+                  class="text-slate-700 hover:text-brand-700"
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div>
+        <h2 class="text-sm font-semibold uppercase tracking-wider text-slate-500">
+          Полезни връзки
+        </h2>
+        <ul class="mt-4 space-y-1.5 text-sm">
+          {
+            externalLinks.map((link) =>
+              link.verified ? (
+                <li>
+                  <a
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="inline-flex items-center gap-1 text-slate-700 hover:text-brand-700"
+                  >
+                    {link.label}
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="h-3 w-3"
+                      aria-hidden="true"
+                    >
+                      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                      <polyline points="15 3 21 3 21 9" />
+                      <line x1="10" y1="14" x2="21" y2="3" />
+                    </svg>
+                  </a>
+                </li>
+              ) : (
+                <li>
+                  <span class="inline-flex flex-wrap items-baseline gap-1 text-slate-700">
+                    <span>{link.label}</span>
+                    <span class="text-xs text-slate-400">(линк предстои)</span>
+                  </span>
+                </li>
+              )
+            )
+          }
+        </ul>
+      </div>
+    </div>
+
+    <div
+      class="mt-10 flex flex-col gap-1 border-t border-slate-200 pt-6 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between"
+    >
+      <p>
+        <span class="font-medium text-slate-700">{school.name}</span>
+        <span class="mx-2 text-slate-300" aria-hidden="true">·</span>
+        <span>{school.contact.address}</span>
+      </p>
+      <p>© {year} {school.shortName} — {school.city}</p>
+    </div>
+  </div>
+</footer>

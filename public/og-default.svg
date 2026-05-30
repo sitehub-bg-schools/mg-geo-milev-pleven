@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" role="img" aria-label="Математическа гимназия Гео Милев — Плевен">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e40af" />
+      <stop offset="55%" stop-color="#1d4ed8" />
+      <stop offset="100%" stop-color="#1e3a8a" />
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.22" />
+      <stop offset="60%" stop-color="#ffffff" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)" />
+  <rect width="1200" height="630" fill="url(#glow)" />
+
+  <!-- Decorative concentric rings, anchored on the right -->
+  <g transform="translate(900 315)" fill="none" stroke="#ffffff">
+    <circle r="240" stroke-opacity="0.10" stroke-width="1" />
+    <circle r="200" stroke-opacity="0.18" stroke-width="1" />
+    <circle r="160" stroke-opacity="0.28" stroke-width="1.5" />
+    <circle r="120" stroke="#eab308" stroke-opacity="0.85" stroke-width="2" stroke-dasharray="4 6" />
+    <circle r="88" fill="#ffffff" fill-opacity="0.08" />
+    <text x="0" y="28" text-anchor="middle"
+          font-family="Manrope, Inter, system-ui, sans-serif"
+          font-weight="800" font-size="96" letter-spacing="-3" fill="#ffffff">ГМ</text>
+    <line x1="84" y1="-26" x2="84" y2="26" stroke="#eab308" stroke-width="1.8" stroke-linecap="round" />
+    <text x="94" y="6"
+          font-family="Manrope, Inter, system-ui, sans-serif"
+          font-weight="700" font-size="16" letter-spacing="3" fill="#eab308">1957</text>
+  </g>
+
+  <!-- North-marker amber dot on the outer ring -->
+  <circle cx="900" cy="75" r="5" fill="#eab308" />
+
+  <!-- Title block, left-aligned -->
+  <g transform="translate(80 235)">
+    <text x="0" y="0"
+          font-family="Manrope, Inter, system-ui, sans-serif"
+          font-weight="600" font-size="22" letter-spacing="6"
+          fill="#eab308" text-transform="uppercase">ПЛЕВЕН · ОТ 1957</text>
+    <text x="0" y="60"
+          font-family="Manrope, Inter, system-ui, sans-serif"
+          font-weight="800" font-size="64" letter-spacing="-1.5" fill="#ffffff">Математическа</text>
+    <text x="0" y="128"
+          font-family="Manrope, Inter, system-ui, sans-serif"
+          font-weight="800" font-size="64" letter-spacing="-1.5" fill="#ffffff">гимназия</text>
+    <text x="0" y="196"
+          font-family="Manrope, Inter, system-ui, sans-serif"
+          font-weight="700" font-size="48" letter-spacing="-0.5" fill="#dbeafe">„Гео Милев“</text>
+    <line x1="0" y1="232" x2="80" y2="232" stroke="#eab308" stroke-width="3" stroke-linecap="round" />
+    <text x="0" y="272"
+          font-family="Inter, system-ui, sans-serif"
+          font-weight="500" font-size="24" fill="#dbeafe">МГ Гео Милев — Плевен</text>
+  </g>
+</svg>

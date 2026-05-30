@@ -1,0 +1,119 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import PageHero from "../components/PageHero.astro";
+import PendingChip from "../components/PendingChip.astro";
+import { sortedNews } from "../data/news.ts";
+
+const sorted = sortedNews();
+const dateFormatter = new Intl.DateTimeFormat("bg-BG", {
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+});
+---
+
+<BaseLayout
+  title="Новини"
+  description="Актуални съобщения, постижения на ученици и преподаватели, предстоящи събития и официални становища на МГ „Гео Милев“ — Плевен."
+>
+  <Header />
+
+  <main id="main" class="flex-1">
+    <PageHero
+      eyebrow="Новини"
+      title="Последни събития"
+      lede="В тази секция публикуваме актуални съобщения, постижения на ученици и учители, предстоящи събития и официални становища на училището."
+    />
+
+    <section class="container py-12 sm:py-16">
+      <ul class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {
+          sorted.map((item) => (
+            <li class="flex h-full flex-col rounded-xl border border-slate-200 bg-white p-6 transition hover:border-brand-500 hover:shadow-sm">
+              {item.kind === "upcoming-event" && (
+                <span class="mb-3 inline-flex w-fit items-center gap-1.5 rounded-full bg-accent-50 px-2.5 py-1 text-xs font-semibold text-accent-700 ring-1 ring-accent-200">
+                  <span
+                    class="h-1.5 w-1.5 rounded-full bg-accent-500"
+                    aria-hidden="true"
+                  />
+                  Предстоящо събитие
+                </span>
+              )}
+              <div class="flex items-center gap-2 text-xs text-slate-500">
+                <time datetime={item.date}>
+                  {dateFormatter.format(new Date(item.date))}
+                </time>
+                {item.category && (
+                  <>
+                    <span aria-hidden="true">•</span>
+                    <span class="font-medium text-brand-700">
+                      {item.category}
+                    </span>
+                  </>
+                )}
+              </div>
+              <h2 class="mt-3 text-lg font-semibold text-slate-900">
+                {item.title}
+              </h2>
+              <p class="mt-2 flex-1 text-sm leading-relaxed text-slate-600">
+                {item.excerpt}
+              </p>
+              <a
+                href="/novini"
+                class="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-brand-700 hover:text-brand-900"
+                aria-label={`Виж повече за: ${item.title}`}
+              >
+                Прочети повече <span aria-hidden="true">→</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+
+      {/* Архив — empty-state card matching the vocabulary on /dokumenti. */}
+      <article
+        class="mt-12 flex flex-col gap-4 rounded-xl border border-slate-200 bg-white p-6 shadow-sm sm:flex-row sm:items-center sm:gap-6"
+        aria-labelledby="news-archive-title"
+      >
+        <div
+          class="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-700"
+          aria-hidden="true"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.75"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="h-6 w-6"
+          >
+            <rect x="3" y="4" width="18" height="4" rx="1" />
+            <path d="M5 8v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8" />
+            <line x1="10" y1="12" x2="14" y2="12" />
+          </svg>
+        </div>
+        <div class="flex-1">
+          <div class="flex flex-wrap items-center gap-3">
+            <h2
+              id="news-archive-title"
+              class="text-lg font-semibold text-slate-900"
+            >
+              Архив на новините
+            </h2>
+            <PendingChip />
+          </div>
+          <p class="mt-2 text-sm leading-relaxed text-slate-600">
+            По-стари публикации, индивидуални страници за всяка новина и RSS
+            емисия — в следващи итерации.
+          </p>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>

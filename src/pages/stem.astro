@@ -1,0 +1,78 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import PageHero from "../components/PageHero.astro";
+import PendingChip from "../components/PendingChip.astro";
+
+const cards: Array<{ title: string; intent: string; bulletWidths: string[] }> = [
+  {
+    title: "Лаборатории",
+    intent:
+      "Специализирани кабинети по природни науки и компютърни лаборатории за практическа работа.",
+    bulletWidths: ["w-4/5", "w-3/5", "w-2/3"],
+  },
+  {
+    title: "Проекти",
+    intent:
+      "Ученически екипи разработват изследователски и приложни проекти под менторство на преподаватели.",
+    bulletWidths: ["w-3/4", "w-2/3", "w-5/6"],
+  },
+  {
+    title: "Партньорства",
+    intent:
+      "Сътрудничества с университети и технологични компании, които отварят възможности за стажове и обучения.",
+    bulletWidths: ["w-2/3", "w-4/5", "w-3/5"],
+  },
+];
+---
+
+<BaseLayout
+  title="СТЕМ"
+  description="СТЕМ средата на МГ „Гео Милев“ — Плевен: специализирани кабинети, ученически проекти, клубове и партньорства с университети и компании."
+>
+  <Header />
+
+  <main id="main" class="flex-1">
+    <PageHero
+      eyebrow="СТЕМ"
+      title="СТЕМ център и проекти"
+      lede="В тази секция ще представим СТЕМ средата на гимназията — специализирани кабинети и лаборатории, ученически проекти, състезания, клубове по интереси и партньорства с университети и технологични компании."
+    />
+
+    <section class="container py-12 sm:py-16">
+      <ul class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {
+          cards.map((card) => (
+            <li class="flex h-full flex-col rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+              <h3 class="text-lg font-semibold text-slate-900">{card.title}</h3>
+              <p class="mt-2 text-sm leading-relaxed text-slate-600">
+                {card.intent}
+              </p>
+              <div class="mt-6 border-t border-slate-100 pt-5">
+                <ul class="space-y-2.5" aria-hidden="true">
+                  {
+                    card.bulletWidths.map((w) => (
+                      <li class="flex items-center gap-2.5">
+                        <span class="h-1.5 w-1.5 shrink-0 rounded-full bg-slate-300" />
+                        <span class={`block h-3 rounded bg-slate-200/80 ${w}`} />
+                      </li>
+                    ))
+                  }
+                </ul>
+                <PendingChip class="mt-4" />
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+
+      <p class="mx-auto mt-10 max-w-2xl text-center text-sm text-slate-600">
+        Подробна информация за СТЕМ центъра, лабораториите и текущите проекти
+        ще бъде добавена след одобрение на материалите от училището.
+      </p>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>
