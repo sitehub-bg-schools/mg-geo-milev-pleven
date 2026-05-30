@@ -1,0 +1,34 @@
+---
+/**
+ * LegalPage — shared shell for institutional/legal text pages (ГДПР, бисквитки,
+ * достъпност, ЗДОИ, сигнали). BaseLayout + Header + PageHero + a prose column
+ * (styled via arbitrary variants so child <h2>/<ul>/<a> need no classes) + Footer.
+ */
+import BaseLayout from "./BaseLayout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import PageHero from "../components/PageHero.astro";
+
+export interface Props {
+  title: string;
+  description?: string;
+  eyebrow?: string;
+}
+
+const { title, description, eyebrow = "Институционална информация" } = Astro.props;
+---
+
+<BaseLayout title={title} description={description}>
+  <Header />
+  <main id="main" class="flex-1">
+    <PageHero eyebrow={eyebrow} title={title} />
+    <section class="container py-12 sm:py-16">
+      <div
+        class="mx-auto max-w-3xl space-y-4 leading-relaxed text-slate-700 [&_h2]:mt-8 [&_h2]:font-display [&_h2]:text-xl [&_h2]:font-bold [&_h2]:text-slate-900 [&_ul]:list-disc [&_ul]:space-y-1 [&_ul]:pl-5 [&_a]:font-medium [&_a]:text-brand-700 [&_a]:underline [&_a]:underline-offset-2"
+      >
+        <slot />
+      </div>
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>

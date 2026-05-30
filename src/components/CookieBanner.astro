@@ -1,0 +1,55 @@
+---
+/**
+ * CookieBanner — minimal, dismissible notice. The site sets no tracking cookies
+ * itself; this informs about third-party cookies (e.g. the Google Maps embed)
+ * and links to the cookie policy. Acknowledgement is stored in localStorage.
+ */
+---
+
+<div
+  id="cookie-banner"
+  hidden
+  class="fixed inset-x-0 bottom-0 z-50 border-t border-slate-200 bg-white/95 backdrop-blur"
+  role="region"
+  aria-label="Съобщение за бисквитки"
+>
+  <div class="container flex flex-col gap-3 py-4 text-sm sm:flex-row sm:items-center sm:justify-between">
+    <p class="text-slate-700">
+      Този сайт не използва бисквитки за проследяване. Вградени услуги (напр.
+      карти) може да поставят свои бисквитки. Вижте
+      <a
+        href="/uchilishteto/biskvitki"
+        class="font-medium text-brand-700 underline underline-offset-2 hover:text-brand-900"
+        >политиката за бисквитки</a
+      >.
+    </p>
+    <button
+      type="button"
+      data-cookie-ack
+      class="shrink-0 rounded-md bg-brand-700 px-4 py-2 font-semibold text-white transition hover:bg-brand-900"
+    >
+      Разбрах
+    </button>
+  </div>
+</div>
+
+<script is:inline>
+  (function () {
+    var KEY = "mg-cookie-ack";
+    var el = document.getElementById("cookie-banner");
+    if (!el) return;
+    try {
+      if (!localStorage.getItem(KEY)) el.hidden = false;
+    } catch (e) {
+      el.hidden = false;
+    }
+    var btn = el.querySelector("[data-cookie-ack]");
+    if (btn)
+      btn.addEventListener("click", function () {
+        try {
+          localStorage.setItem(KEY, "1");
+        } catch (e) {}
+        el.hidden = true;
+      });
+  })();
+</script>

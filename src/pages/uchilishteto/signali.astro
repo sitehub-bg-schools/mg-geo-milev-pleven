@@ -1,0 +1,50 @@
+---
+import LegalPage from "../../layouts/LegalPage.astro";
+import { school } from "../../data/school.ts";
+
+const subject = encodeURIComponent("Сигнал");
+const mailto = `mailto:${school.contact.email}?subject=${subject}`;
+---
+
+<LegalPage
+  title="Подаване на сигнали"
+  description="Канал за подаване на сигнали в МГ „Гео Милев“ — Плевен (ЗЗЛПСПОИ)."
+>
+  <p>
+    Училището приема сигнали за нарушения, включително по реда на Закона за
+    защита на лицата, подаващи сигнали или публично оповестяващи информация за
+    нарушения (ЗЗЛПСПОИ).
+  </p>
+
+  <h2>Как да подадете сигнал</h2>
+  <ul>
+    <li>
+      По електронен път — на
+      <a href={`mailto:${school.contact.email}`}>{school.contact.email}</a>;
+    </li>
+    <li>Писмено — на адрес {school.contact.address};</li>
+    <li>Устно — в канцеларията на училището в работно време.</li>
+  </ul>
+
+  <h2>Отговорно лице</h2>
+  <p>
+    Служителят, отговарящ за разглеждане на сигнали, и вътрешните правила за
+    приемането им предстои да бъдат публикувани.
+  </p>
+
+  <h2>Защита на подаващия сигнал</h2>
+  <p>
+    Самоличността на подаващия сигнал и информацията в сигнала се обработват
+    поверително. Забранени са ответни действия (репресии) срещу лице, подало
+    сигнал добросъвестно.
+  </p>
+
+  <p class="!mt-8">
+    <a
+      href={mailto}
+      class="inline-flex items-center gap-2 rounded-md bg-brand-700 px-5 py-3 text-sm font-semibold !text-white !no-underline transition hover:bg-brand-900"
+    >
+      Подай сигнал по имейл
+    </a>
+  </p>
+</LegalPage>

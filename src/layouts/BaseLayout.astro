@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import AnnouncementBar from "../components/AnnouncementBar.astro";
+import CookieBanner from "../components/CookieBanner.astro";
 import { school } from "../data/school.ts";
 
 export interface Props {
@@ -53,5 +54,6 @@ const fullTitle = title.includes(school.shortName) ? title : `${title} — ${sch
     <a href="#main" class="skip-link">Към съдържанието</a>
     <AnnouncementBar />
     <slot />
+    <CookieBanner />
   </body>
 </html>

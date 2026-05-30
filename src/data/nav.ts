@@ -18,8 +18,8 @@ export const primaryNav: NavItem[] = [
   { href: "/kontakti", label: "Контакти" },
 ];
 
-/**
- * Utility items (Търсене, Школо/е-дневник, Подай сигнал). Deferred to Phase 7
- * when search and the сигнал form exist — listed here so the model is ready.
- */
-export const utilityNav: NavItem[] = [];
+/** Utility items shown in the slim top strip and the mobile menu. */
+export const utilityNav: NavItem[] = [
+  { href: "/turcene", label: "Търсене" },
+  { href: "/uchilishteto/signali", label: "Подай сигнал" },
+];
