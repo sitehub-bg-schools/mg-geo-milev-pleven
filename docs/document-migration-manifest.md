@@ -33,6 +33,24 @@ Project goal (verbatim): „Основна цел на проекта е да н
 се осигурят условия за ефективност на образованието, да се противодейства на
 риска от отпадане в ситуация на обучение от разстояние."
 
+## Олимпиади (Новини → Олимпиади)
+
+A documents/results hub under news: a national-round programme plus олимпиади
+schedules and result protocols. Narrative items (7 лауреати по физика; Плевен
+домакин на националния кръг по физика, 24–26 април 2026) are news; the files
+below are DMS material.
+
+| Document | Date | Path |
+|---|---|---|
+| Предварителна програма за национален кръг на олимпиадата по физика | 24–26.04.2026 | /images/2026/novini/nof/programa_nof_pleven2026.pdf |
+| График за провеждане на ученическите олимпиади 2025–2026 | 26.08.2025 | /images/2025-26/documents/zap2075-grafik-uchenicheski-olimpiadi26082025.pdf |
+| Протокол — Математика IV–VI клас | 2026 | /media/attachments/2026/02/16/protokoli_mat.xlsx |
+| Протокол — областен кръг (математика) | 2026 | /media/attachments/2026/03/20/rezultom.docx |
+| Протокол — окончателни резултати (математика) | 2026 | /images/2026/olimpiadi/okonchatelni_rezultsmo.docx |
+| Протокол — Лингвистика V–VII клас | 2026 | /media/attachments/2026/02/16/lingvistika.xlsx |
+| Протокол — Лингвистика, областен кръг | 2026 | /images/2026/olimpiadi/oblastenlingv.docx |
+| Протокол — Лингвистика, окончателни резултати | 2026 | /images/2026/olimpiadi/okonchatelnilingv.docx |
+
 ## Профил на купувача (ЗОП)
 
 Section headers on the reference: Обща информация · Правила за възлагане на

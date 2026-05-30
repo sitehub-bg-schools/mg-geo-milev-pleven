@@ -95,17 +95,25 @@ Faithful copy of `pleven-mg.com/about-us`. Sections:
   placeholder grid was removed) — decide if a real staff grid is wanted once
   names exist.
 
-### 3. Новини `/novini` — 🟡 Functional
+### 3. Новини `/novini` — ✅ Built (rebuilt 2026-05-30)
 
-- **Hero** + a responsive card grid of all feed items, sorted (upcoming events
-  pinned, then news newest-first). *Source:* `news.ts` (currently 4 items: 24
-  май, Неофит Рилски, Milev's Multilingual Masters, Drone Fest).
-- **Архив на новините** — pending empty-state card (older posts, per-news pages,
-  RSS — future).
-- **Gaps vs reference:** no individual article pages (cards link back to /novini);
-  no Олимпиади sub-section; only a handful of items vs. their ongoing feed.
-- **For designer:** decide the article-detail pattern (dedicated pages vs.
-  expand-in-place) and whether categories/filters are needed.
+- **Hero** + responsive card grid, sorted (upcoming events pinned, then news
+  newest-first), each card links to its own article page.
+- **Content model:** **Astro content collection** — one Markdown file per
+  article under `src/content/news/` (`content.config.ts`). Chosen over a TS
+  array because news is ongoing, text-only content editable file-by-file through
+  the staging→publish flow (no separate system needed; unlike binary docs/DMS).
+- **Article pages:** `/novini/<slug>` (`src/pages/novini/[slug].astro`) render
+  the Markdown body. Shared `NewsCard` component used by the listing and the home
+  teaser.
+- **Currently carried:** the 6 most-recent real articles from the reference
+  (24 май · Неофит Рилски · Milev's Multilingual Masters · Майски концерт · Лека
+  атлетика 3-то място · Шахмат шампиони), with full verbatim bodies.
+- **Архив на новините** — pending empty-state card; the reference has ~90
+  articles across 15 pages — older posts are carried over gradually (or via the
+  edit flow), not bulk-migrated.
+- **For designer:** decide if categories/filters, pagination, and per-article
+  images are wanted once the feed grows.
 
 ### 4. Обучение `/obuchenie` — ⏳ Placeholder (partial real)
 
@@ -193,8 +201,10 @@ Pages that are really document lists — Документи (Бюджет, Пр�
 until the DMS exists. Migration source data: `document-migration-manifest.md`.
 
 New pages implied by the reference but **deferred to the DMS** (not built now):
-`/proekti` (Проекти), an Обществен съвет block on /za-nas, and an „Информация за
-родители" archive. Their content is captured in the manifest.
+`/proekti` (Проекти), an Обществен съвет block on /za-nas, an „Информация за
+родители" archive, and the **Олимпиади** sub-section of Новини (which is largely
+schedules + result protocols — DMS material; its narrative items live in the
+news feed). Their content is captured in the manifest.
 
 ## Cross-cutting: decisions for the designer
 
