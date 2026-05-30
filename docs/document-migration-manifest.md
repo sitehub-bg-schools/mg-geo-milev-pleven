@@ -33,6 +33,20 @@ Project goal (verbatim): „Основна цел на проекта е да н
 се осигурят условия за ефективност на образованието, да се противодейства на
 риска от отпадане в ситуация на обучение от разстояние."
 
+## Обучение (sub-pages)
+
+The Обучение section is ~8 sub-pages, almost all document/image/list based.
+Profiles are the only rich text (already on /obuchenie from `school.ts`).
+
+| Sub-page | Type | Asset / notes |
+|---|---|---|
+| Графици | files | 7 categories (график на учебното време, организация на учебния ден, контролни и класни, консултации, час на класа, консултиране, приемно време). Live asset: /images/2025/grafik/grafik25-26_page-0001.jpg (term schedule as image) |
+| За зрелостниците (ДЗИ) | files | Заповед № РД09-2072/26.08.2025 → /media/attachments/2025/12/05/zap2027-grafik-dzi_26082025.pdf · ДЗИ 2025-2026 → /media/attachments/2025/12/05/dzi.pdf |
+| Форми на обучение | image | /images/2025-26/formi2025-26.jpg (the 4 forms embedded in a JPG; no text) |
+| Занимания по интереси | structured list | „Списък на групи, 2025/2026" — ~21 клуба by direction (математика ×8, дигитално творчество ×2, природни науки ×2, гражданско образование ×3, изкуства ×1, спорт ×2). Full list to capture at build/migration. |
+| Свободни места | list | free-places listing (not deep-fetched) |
+| Учебници | files | textbook list; known asset /images/2024/obuchenie/uchebnicipp.pdf |
+
 ## Олимпиади (Новини → Олимпиади)
 
 A documents/results hub under news: a national-round programme plus олимпиади

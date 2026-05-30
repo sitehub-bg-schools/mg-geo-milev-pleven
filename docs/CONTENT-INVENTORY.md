@@ -120,9 +120,14 @@ Faithful copy of `pleven-mg.com/about-us`. Sections:
 - **Hero** + **Профили** list (real, from `school.ts`).
 - **Седмично разписание** — a 5×7 schedule **skeleton** (grey bars), desktop grid
   + mobile stacked cards, labelled „предстои публикуване".
-- **Needs from school:** real timetable; учебни планове; извънкласни дейности.
-- **Gap vs reference:** their Обучение has ~8 sub-pages (графици, учебни планове,
-  ИКД, …) — ours is a single page. Decide IA (sub-pages vs. anchored sections).
+- **Reference reality:** Обучение is ~8 sub-pages, and almost all are
+  documents/images/lists (see the manifest's "Обучение" section): Графици,
+  УУП (учебни планове), За зрелостниците (ДЗИ), Форми на обучение (a JPG!),
+  Занимания по интереси (21-club list), Свободни места, Учебници. Only the
+  **профили** are rich text — and we already have those.
+- **Decision needed:** these sub-pages are **DMS material** (managed files) +
+  two **structured lists** (clubs, curricula) that should be data-driven, not
+  bespoke pages. See "Documents: separate DMS" below.
 
 ### 5. Документи `/dokumenti` — ⏳ Placeholder (stays placeholder by decision)
 
