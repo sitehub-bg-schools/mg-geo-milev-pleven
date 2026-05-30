@@ -1,0 +1,39 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import PageHero from "../components/PageHero.astro";
+import HubCard from "../components/HubCard.astro";
+
+const sections: { title: string; description: string; href?: string }[] = [
+  { title: "За нас", description: "Мисия, кратка история и училищни психолози.", href: "/za-nas" },
+  { title: "Преподаватели", description: "Педагогически състав по катедри, с контакти и приемно време." },
+  { title: "Ръководство", description: "Директор и заместник-директори." },
+  { title: "Документи", description: "Правилници, бюджет, профил на купувача, ГДПР и други.", href: "/dokumenti" },
+  { title: "Обществен съвет и настоятелство", description: "Състав, протоколи и решения." },
+];
+---
+
+<BaseLayout
+  title="Училището"
+  description="Информация за МГ „Гео Милев“ — Плевен: за нас, преподаватели, ръководство, документи и институционална информация."
+>
+  <Header />
+  <main id="main" class="flex-1">
+    <PageHero
+      eyebrow="Училището"
+      title="Опознай училището"
+      lede="История, мисия, екип и институционална информация на Математическа гимназия „Гео Милев“ — Плевен."
+    />
+    <section class="container py-12 sm:py-16">
+      <ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {sections.map((s) => (
+          <li>
+            <HubCard title={s.title} description={s.description} href={s.href} />
+          </li>
+        ))}
+      </ul>
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>

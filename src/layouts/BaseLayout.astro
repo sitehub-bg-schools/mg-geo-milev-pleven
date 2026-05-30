@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import AnnouncementBar from "../components/AnnouncementBar.astro";
 import { school } from "../data/school.ts";
 
 export interface Props {
@@ -50,6 +51,7 @@ const fullTitle = title.includes(school.shortName) ? title : `${title} — ${sch
   </head>
   <body class="flex min-h-screen flex-col">
     <a href="#main" class="skip-link">Към съдържанието</a>
+    <AnnouncementBar />
     <slot />
   </body>
 </html>

@@ -1,0 +1,46 @@
+---
+/**
+ * HubCard — a section entry on a hub landing page. Links to its section when
+ * `href` is set; otherwise renders a „Предстои публикуване" placeholder (the
+ * section is planned but not built yet). Keeps hubs honest and 404-free.
+ */
+import PendingChip from "./PendingChip.astro";
+
+export interface Props {
+  title: string;
+  description?: string;
+  href?: string;
+}
+
+const { title, description, href } = Astro.props;
+const Tag = href ? "a" : "div";
+const linkProps = href ? { href } : {};
+---
+
+<Tag
+  {...linkProps}
+  class:list={[
+    "flex h-full flex-col rounded-xl border border-slate-200 bg-white p-6 transition",
+    href && "hover:-translate-y-0.5 hover:border-brand-500 hover:shadow-md",
+  ]}
+>
+  <h3 class="text-lg font-semibold text-slate-900">{title}</h3>
+  {
+    description && (
+      <p class="mt-2 flex-1 text-sm leading-relaxed text-slate-600">
+        {description}
+      </p>
+    )
+  }
+  <div class="mt-4">
+    {
+      href ? (
+        <span class="inline-flex items-center gap-1 text-sm font-semibold text-brand-700">
+          Към секцията <span aria-hidden="true">→</span>
+        </span>
+      ) : (
+        <PendingChip />
+      )
+    }
+  </div>
+</Tag>

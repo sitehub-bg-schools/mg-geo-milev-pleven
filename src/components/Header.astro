@@ -1,17 +1,6 @@
 ---
 import { school } from "../data/school.ts";
-
-const navLinks = [
-  { href: "/", label: "Начало" },
-  { href: "/za-nas", label: "За нас" },
-  { href: "/novini", label: "Новини" },
-  { href: "/obuchenie", label: "Обучение" },
-  { href: "/dokumenti", label: "Документи" },
-  { href: "/priem", label: "Прием" },
-  { href: "/stem", label: "СТЕМ" },
-  { href: "/galeriya", label: "Галерия" },
-  { href: "/kontakti", label: "Контакти" },
-];
+import { primaryNav as navLinks } from "../data/nav.ts";
 
 const pathname = Astro.url.pathname.replace(/\/$/, "") || "/";
 

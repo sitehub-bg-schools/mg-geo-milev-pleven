@@ -1,0 +1,39 @@
+---
+/**
+ * AnnouncementBar — site-wide strip pinned above the header. Renders nothing
+ * when there is no active announcement (the common case). Content comes from
+ * `src/data/announcementBar.ts`.
+ */
+import { currentAnnouncement } from "../data/announcementBar.ts";
+
+const a = currentAnnouncement;
+---
+
+{
+  a && (
+    <div
+      class:list={[
+        a.level === "urgent"
+          ? "bg-brand-700 text-white"
+          : "bg-accent-100 text-slate-900",
+      ]}
+      role="region"
+      aria-label="Съобщение от училището"
+    >
+      <div class="container flex flex-wrap items-center gap-x-3 gap-y-1 py-2 text-sm">
+        <span class="font-semibold">
+          {a.level === "urgent" ? "Важно:" : "Съобщение:"}
+        </span>
+        <span class="min-w-0 flex-1">{a.message}</span>
+        {a.href && (
+          <a
+            href={a.href}
+            class="shrink-0 font-semibold underline underline-offset-2"
+          >
+            Повече →
+          </a>
+        )}
+      </div>
+    </div>
+  )
+}

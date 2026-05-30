@@ -1,0 +1,39 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import PageHero from "../components/PageHero.astro";
+import HubCard from "../components/HubCard.astro";
+
+const sections: { title: string; description: string; href?: string }[] = [
+  { title: "Олимпиади и състезания", description: "Лауреати и медали от национални и международни олимпиади." },
+  { title: "Резултати ДЗИ и НВО", description: "Резултати от държавните зрелостни изпити и националното външно оценяване." },
+  { title: "Реализация на завършилите", description: "Къде продължават образованието си нашите възпитаници." },
+  { title: "Възпитаници", description: "Известни възпитаници и техните истории." },
+  { title: "Ученически проекти", description: "Изследователски и приложни проекти на нашите ученици." },
+];
+---
+
+<BaseLayout
+  title="Постижения"
+  description="Олимпиади, медали, резултати от ДЗИ/НВО, реализация на завършилите и ученически проекти на МГ „Гео Милев“ — Плевен."
+>
+  <Header />
+  <main id="main" class="flex-1">
+    <PageHero
+      eyebrow="Постижения"
+      title="Нашите успехи"
+      lede="Олимпийски отличия, резултати на изпитите, реализацията на завършилите и проектите на учениците ни. Секциите се попълват с актуалните данни."
+    />
+    <section class="container py-12 sm:py-16">
+      <ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {sections.map((s) => (
+          <li>
+            <HubCard title={s.title} description={s.description} href={s.href} />
+          </li>
+        ))}
+      </ul>
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>
