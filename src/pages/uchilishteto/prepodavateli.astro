@@ -1,0 +1,97 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import PageHero from "../../components/PageHero.astro";
+import PendingChip from "../../components/PendingChip.astro";
+import StaffCard from "../../components/StaffCard.astro";
+import { leadership, departments, teachingStaff } from "../../data/staff.ts";
+
+const hasStaff = teachingStaff.length > 0;
+const byDept = departments
+  .map((d) => ({
+    department: d,
+    members: teachingStaff.filter((m) => m.department === d),
+  }))
+  .filter((g) => g.members.length > 0);
+---
+
+<BaseLayout
+  title="Ръководство и преподаватели"
+  description="Ръководството и педагогическият състав на МГ „Гео Милев“ — Плевен, по катедри."
+>
+  <Header />
+
+  <main id="main" class="flex-1">
+    <PageHero
+      eyebrow="Училището"
+      title="Ръководство и преподаватели"
+      lede="Ръководният екип на гимназията и педагогическият състав по катедри."
+    />
+
+    {/* Ръководство */}
+    <section id="rakovodstvo" class="container scroll-mt-24 py-12 sm:py-16">
+      <h2 class="font-display text-2xl font-bold sm:text-3xl">Ръководство</h2>
+      <p class="mt-2 text-sm text-slate-600">
+        Имената и визитките ще бъдат добавени след официално потвърждение от
+        училището.
+      </p>
+      <ul class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {leadership.map((m) => (
+          <li>
+            <StaffCard member={m} />
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    {/* Педагогически състав по катедри */}
+    <section id="prepodavateli" class="scroll-mt-24 border-t border-slate-200 bg-slate-50">
+      <div class="container py-12 sm:py-16">
+        <h2 class="font-display text-2xl font-bold sm:text-3xl">
+          Педагогически състав по катедри
+        </h2>
+
+        {
+          hasStaff ? (
+            <div class="mt-8 space-y-12">
+              {byDept.map((g) => (
+                <div>
+                  <h3 class="font-display text-xl font-bold text-brand-700">
+                    {g.department}
+                  </h3>
+                  <ul class="mt-5 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                    {g.members.map((m) => (
+                      <li>
+                        <StaffCard member={m} />
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div class="mt-8 rounded-2xl border border-dashed border-slate-300 bg-white p-8">
+              <div class="flex flex-wrap items-center gap-3">
+                <p class="text-slate-700">
+                  Списъкът на преподавателите за учебната 2025/2026 г. ще бъде
+                  публикуван по катедри.
+                </p>
+                <PendingChip label="Очаквайте" />
+              </div>
+              <ul class="mt-6 flex flex-wrap gap-2">
+                {departments.map((d) => (
+                  <li class="inline-flex rounded-full bg-slate-100 px-3 py-1 text-sm text-slate-600">
+                    {d}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )
+        }
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>
