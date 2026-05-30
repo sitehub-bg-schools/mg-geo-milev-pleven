@@ -39,9 +39,9 @@ export default {
         },
       },
       fontFamily: {
-        // Golos Text — body/UI grotesque (Cyrillic-native)
         sans: [
-          '"Golos Text"',
+          '"Inter"',
+          '"Noto Sans"',
           "system-ui",
           "-apple-system",
           "Segoe UI",
@@ -50,15 +50,14 @@ export default {
           "Arial",
           "sans-serif",
         ],
-        // Spectral — editorial display serif
-        display: ['"Spectral"', "Georgia", '"Times New Roman"', "serif"],
-        // Martian Mono — numerals, labels, "computation" voice
-        mono: [
-          '"Martian Mono"',
-          "ui-monospace",
-          "SFMono-Regular",
-          "Menlo",
-          "monospace",
+        display: [
+          '"Manrope"',
+          '"Inter"',
+          "system-ui",
+          "-apple-system",
+          "Segoe UI",
+          "Roboto",
+          "sans-serif",
         ],
       },
     },

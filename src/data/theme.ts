@@ -35,5 +35,5 @@ export const theme: SchoolTheme = {
   },
   paper: "#ffffff",
   ink: "#0f172a", // slate-900
-  fonts: { display: "Spectral", sans: "Golos Text", mono: "Martian Mono" },
+  fonts: { display: "Manrope", sans: "Inter", mono: "ui-monospace" },
 };
