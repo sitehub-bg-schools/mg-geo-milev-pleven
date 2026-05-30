@@ -1,0 +1,85 @@
+---
+/**
+ * DocumentList — the single, reusable renderer for a document category. Used by
+ * /dokumenti and the document sub-sections of /obuchenie, so every document
+ * listing on the site shares one markup/behaviour.
+ *
+ * Per document: a file-type badge, the title, an optional date, and either a
+ * download link (when `href` is set and not pending) or an „очаквайте" chip.
+ * An empty category renders a pending empty-state.
+ */
+import type { DocCategory, DocItem } from "../data/documents.ts";
+import PendingChip from "./PendingChip.astro";
+
+export interface Props {
+  category: DocCategory;
+  /** Heading level so the page controls document outline (default h2). */
+  as?: "h2" | "h3";
+}
+
+const { category, as: Heading = "h2" } = Astro.props;
+const { title, description, note, documents } = category;
+
+const typeLabel: Record<NonNullable<DocItem["fileType"]>, string> = {
+  pdf: "PDF",
+  doc: "DOC",
+  xls: "XLS",
+  image: "IMG",
+  link: "ЛИНК",
+};
+
+const isLive = (d: DocItem) => Boolean(d.href) && !d.pending;
+---
+
+<section id={category.slug} class="scroll-mt-24">
+  <Heading class="font-display text-xl font-bold text-slate-900 sm:text-2xl">
+    {title}
+  </Heading>
+  {description && <p class="mt-2 max-w-3xl text-slate-600">{description}</p>}
+  {note && <p class="mt-1 text-sm text-slate-400">{note}</p>}
+
+  {
+    documents.length === 0 ? (
+      <div class="mt-5 flex flex-col items-start gap-3 rounded-xl border border-dashed border-slate-300 bg-slate-50 p-5 sm:flex-row sm:items-center sm:justify-between">
+        <p class="text-sm text-slate-600">
+          Документите ще бъдат публикувани в тази секция.
+        </p>
+        <PendingChip label="Очаквайте" class="shrink-0" />
+      </div>
+    ) : (
+      <ul class="mt-5 divide-y divide-slate-100 rounded-xl border border-slate-200 bg-white">
+        {documents.map((doc: DocItem) => (
+          <li class="flex flex-wrap items-center gap-x-4 gap-y-2 px-5 py-4">
+            <span
+              class="inline-flex h-9 min-w-[2.75rem] items-center justify-center rounded-md bg-brand-50 px-1.5 text-[0.7rem] font-bold tracking-wide text-brand-700"
+              aria-hidden="true"
+            >
+              {typeLabel[doc.fileType ?? "pdf"]}
+            </span>
+            <span class="min-w-0 flex-1">
+              <span class="block text-sm font-medium text-slate-800">
+                {doc.title}
+              </span>
+              {doc.date && (
+                <span class="mt-0.5 block text-xs text-slate-500">{doc.date}</span>
+              )}
+            </span>
+            {isLive(doc) ? (
+              <a
+                href={doc.href}
+                target={doc.fileType === "link" ? "_blank" : undefined}
+                rel={doc.fileType === "link" ? "noopener noreferrer" : undefined}
+                class="inline-flex shrink-0 items-center gap-1 text-sm font-semibold text-brand-700 hover:text-brand-900"
+              >
+                {doc.fileType === "link" ? "Отвори" : "Изтегли"}
+                <span aria-hidden="true">{doc.fileType === "link" ? "↗" : "↓"}</span>
+              </a>
+            ) : (
+              <PendingChip label="Очаквайте" class="shrink-0" />
+            )}
+          </li>
+        ))}
+      </ul>
+    )
+  }
+</section>

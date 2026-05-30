@@ -125,25 +125,33 @@ Faithful copy of `pleven-mg.com/about-us`. Sections:
   УУП (учебни планове), За зрелостниците (ДЗИ), Форми на обучение (a JPG!),
   Занимания по интереси (21-club list), Свободни места, Учебници. Only the
   **профили** are rich text — and we already have those.
-- **Decision needed:** these sub-pages are **DMS material** (managed files) +
-  two **structured lists** (clubs, curricula) that should be data-driven, not
-  bespoke pages. See "Documents: separate DMS" below.
+- **Now built (2026-05-30):** the document sub-sections (Графици · УУП · За
+  зрелостниците/ДЗИ · Форми на обучение · Свободни места · Учебници) render via
+  the **same `DocumentList` component** as /dokumenti, from
+  `src/data/documents.ts` (`group: "obuchenie"`) — placeholders today. The
+  bespoke schedule skeleton was removed (superseded by the Графици category).
+- **Still to do:** Занимания по интереси (a ~21-club list) is structured data,
+  not files — render it as its own list once the full roster is captured.
 
-### 5. Документи `/dokumenti` — ⏳ Placeholder (stays placeholder by decision)
+### 5. Документи `/dokumenti` — 🟡 Functional (data-driven, placeholders)
 
-- **Hero** + 5 category cards, each with a `PendingChip`: Правилници · Учебни
-  планове · Бюджет · Профил на купувача · Други. *Source:* inline (anchors only).
-- **Decision (2026-05-30): documents go in a separate document management
-  system (DMS), self-hosted — not hardcoded per page.** The reference site has
-  ~45 budget PDFs plus procurement and parents/COVID docs; hand-coding those
-  into pages is the wrong approach. Until the DMS exists, this page and the
-  budget/procurement sections remain honest placeholders. Harvested source URLs
-  for the eventual migration are recorded in `document-migration-manifest.md`.
-- **Needs (DMS):** an admin-managed catalog (category, title, date, file) that
-  the FE renders. Footer links to `#gdpr` / `#etichen-kodeks` anchors that need
-  real entries once the DMS is in place.
-- **For designer:** decide list vs. card layout and per-doc metadata (date,
-  type, size) for the eventual DMS-driven list.
+- **Hero** + category **quick-nav** + a data-driven list of categories, each
+  rendered by the shared **`DocumentList`** component. *Source:*
+  `src/data/documents.ts` (`group: "dokumenti"`).
+- **Categories:** Правилници · Учебни планове · Защита на личните данни (ГДПР) ·
+  Бюджет · Профил на купувача · Информация за родители и ученици · Информация за
+  абитуриенти · Заявления (образци) · Национална телефонна линия за деца (live
+  external link 116 111) · Други.
+- **The generic pattern (decided 2026-05-30):** one data file + one component
+  render every document listing. Each `DocItem` with an `href` shows a download
+  link; without one it shows an „очаквайте" chip. This is the exact shape the
+  **DMS** will populate later — no page rewrites needed when real files arrive.
+  Almost all entries are pending placeholders today (we don't self-host the
+  files yet); source URLs are in `document-migration-manifest.md`.
+- **Footer anchors** now resolve: ГДПР→`#zashtita-na-lichnite-danni`, Етичен
+  кодекс→`#pravilnici`, Профил на купувача→`#profil-na-kupuvacha`.
+- **For designer:** per-doc metadata shown is type-badge + title + date; decide
+  if size/updated-at and category grouping/pagination are wanted at scale.
 
 ### 6. Прием `/priem` — ⏳ Placeholder (honest empty state)
 
