@@ -1,0 +1,20 @@
+name: guard-main
+
+# Enforces the promotion rule: code may reach `main` only via a pull request
+# whose source branch is `staging`. Required status check on `main`.
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  only-from-staging:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Enforce source branch is staging
+        run: |
+          if [ "${{ github.head_ref }}" != "staging" ]; then
+            echo "::error::PRs into 'main' may only come from 'staging' (got '${{ github.head_ref }}')."
+            exit 1
+          fi
+          echo "OK: PR source branch is 'staging'."
