@@ -185,6 +185,11 @@ function isActive(href: string): boolean {
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape") close();
     });
+    // Close when tapping/clicking outside the open panel.
+    document.addEventListener("click", (e) => {
+      const target = e.target as Node | null;
+      if (nav.open && target && !nav.contains(target)) close();
+    });
     nav.querySelectorAll("[data-close-mobile-nav]").forEach((el) => {
       el.addEventListener("click", (e) => {
         e.preventDefault();
