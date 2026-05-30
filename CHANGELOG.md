@@ -9,6 +9,68 @@ public releases.
 
 ---
 
+## v1.1.0 — 2026-05-30
+
+Content rebuild: faithful copy of the school's previous site
+(pleven-mg.com) in our brand, plus the content-architecture decisions
+that made it maintainable. Shipped to `staging` page by page. New ADR
+log records the architectural choices (`docs/adr/`).
+
+### Added
+
+- **Home page** rebuilt to mirror the reference (hero → Актуално
+  announcements → „Защо да избереш нас?" → профили → features → новини →
+  контакти+карта → история). New `announcements.ts`, components
+  `AnnouncementCard`, `Timeline`, `MapEmbed`. Spec:
+  `docs/superpowers/specs/2026-05-30-home-page-faithful-copy-design.md`.
+- **За нас** rebuilt: mission, history timeline, училищни психолози
+  (verbatim), pending педагогически състав block, 24 май greeting
+  placeholders.
+- **Новини** rebuilt as an **Astro content collection** — one Markdown
+  file per article (`src/content/news/`, `content.config.ts`), real
+  per-article pages at `/novini/<slug>`, shared `NewsCard`. 6 recent
+  articles migrated with full verbatim bodies. (ADR-0001)
+- **Generic document pattern** — `src/data/documents.ts` +
+  `DocumentList.astro` render every document listing. `/dokumenti`
+  (Правилници, ГДПР, Бюджет, Профил на купувача, Информация за родители
+  и ученици / абитуриенти, Заявления, Национална телефонна линия 116 111,
+  …) and the `/obuchenie` document sub-sections (Графици, УУП, ДЗИ, Форми
+  на обучение, Свободни места, Учебници) both consume it. (ADR-0002)
+- **`docs/adr/`** — ADR log for this instance: 0001 news as content
+  collections, 0002 documents generic pattern + DMS, 0003 URL slug
+  convention.
+- **`docs/CONTENT-INVENTORY.md`** — per-page inventory for designer
+  review (kept current).
+- **`docs/document-migration-manifest.md`** — harvested source URLs for
+  every reference document (≈45 budget files, procurement, ДЗИ,
+  олимпиади protocols, parents/COVID, обучение assets) as DMS migration
+  source.
+
+### Changed
+
+- `school.ts` gained `about` and `features` copy; `taglines.horace` and
+  the history wording corrected to verbatim.
+- `news.ts` reduced from a hardcoded array to sort/format helpers over
+  the content collection.
+- `/obuchenie` bespoke schedule skeleton removed (superseded by the
+  Графици document category); profiles kept.
+- Footer institutional links repointed to real category anchors
+  (`#zashtita-na-lichnite-danni`, `#pravilnici`, `#profil-na-kupuvacha`).
+
+### Decisions (see `docs/adr/` and project memory)
+
+- **News = text in git** (content collections, edited via staging→publish);
+  **documents = binary files in a future self-hosted DMS**, not hardcoded
+  per page. Олимпиади / Проекти / Обществен съвет / parents archive are
+  DMS-deferred; their content is in the migration manifest.
+- **URL slugs**: Bulgarian transliteration, site-wide (`/za-nas` kept,
+  not `/about`).
+
+### Build
+
+- `npm run build` — 16 pages, 0 errors (now incl. 6 `/novini/<slug>`).
+- `npx astro check` — 0 errors / warnings / hints.
+
 ## v1.0.0 — 2026-05-30
 
 First launch-candidate release. Designer review status: **GO with
