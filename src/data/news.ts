@@ -28,7 +28,7 @@ export const news: NewsItem[] = [
   {
     slug: "neofit-rilski-award",
     title: 'Учител от МГ "Гео Милев" с престижно отличие "Неофит Рилски"',
-    date: "2026-05-20",
+    date: "2026-05-21",
     excerpt:
       "Министерство на образованието удостои наш учител с най-високото признание в системата на образованието.",
     category: "Признание",
@@ -37,29 +37,11 @@ export const news: NewsItem[] = [
   {
     slug: "milevs-multilingual-masters",
     title: 'Отбелязахме Деня на Европа с "Milev\'s Multilingual Masters"',
-    date: "2026-05-09",
+    date: "2026-05-12",
     excerpt:
       "Многоезичното състезание събра ученици от различни класове в творческо предизвикателство.",
     category: "Събитие",
     kind: "news",
-  },
-  {
-    slug: "physics-olympiad-laureates",
-    title: "Седем лауреати на Националната олимпиада по физика",
-    date: "2026-05-12",
-    excerpt:
-      "Гордеем се с постиженията на нашите ученици на най-високото национално ниво.",
-    category: "Олимпиада",
-    kind: "news",
-  },
-  {
-    slug: "drone-fest-pleven-2026",
-    title: "Drone Fest Плевен — 5 юни",
-    date: "2026-06-05",
-    excerpt:
-      "Първият регионален фестивал на дронове в Плевен — с участието на ученици от МГ.",
-    category: "Събитие",
-    kind: "upcoming-event",
   },
 ];
 

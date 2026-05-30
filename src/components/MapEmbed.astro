@@ -1,0 +1,29 @@
+---
+/**
+ * MapEmbed — responsive Google Maps iframe.
+ *
+ * Uses the keyless `?output=embed` endpoint with a text query, so no API key
+ * or build-time geocoding is needed. Lazy-loaded; the query defaults to the
+ * school by name + city for an accurate pin.
+ */
+export interface Props {
+  /** Free-text place query, e.g. school name + city. */
+  query: string;
+  /** Accessible title for the iframe. */
+  title?: string;
+}
+
+const { query, title = "Карта" } = Astro.props;
+const src = `https://maps.google.com/maps?q=${encodeURIComponent(query)}&z=15&output=embed`;
+---
+
+<div class="aspect-[16/10] w-full overflow-hidden rounded-xl ring-1 ring-slate-200">
+  <iframe
+    src={src}
+    title={title}
+    loading="lazy"
+    referrerpolicy="no-referrer-when-downgrade"
+    class="h-full w-full border-0"
+    allowfullscreen
+  ></iframe>
+</div>

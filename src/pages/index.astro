@@ -4,7 +4,11 @@ import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import SpecializationCard from "../components/SpecializationCard.astro";
 import StatBadge from "../components/StatBadge.astro";
+import AnnouncementCard from "../components/AnnouncementCard.astro";
+import Timeline from "../components/Timeline.astro";
+import MapEmbed from "../components/MapEmbed.astro";
 import { school } from "../data/school.ts";
+import { announcements } from "../data/announcements.ts";
 import { sortedNews } from "../data/news.ts";
 
 const latestNews = sortedNews().slice(0, 3);
@@ -25,6 +29,8 @@ const specIcons: Record<
   "Софтуерни и хардуерни науки": "code",
   "Природни науки": "leaf",
 };
+
+const mapQuery = `${school.name} ${school.city}`;
 ---
 
 <BaseLayout
@@ -48,9 +54,8 @@ const specIcons: Record<
           {/* Left: copy */}
           <div class="md:col-span-7">
             {/* Eyebrow pill — carries the compact ГМ identity glyph so the
-                brand mark is anchored across every breakpoint (mobile +
-                desktop), without duplicating the large SVG monogram that
-                appears in the right column at md+. */}
+                brand mark is anchored across every breakpoint, plus the school
+                identity since the H1 now leads with the slogan. */}
             <p
               class="inline-flex items-center gap-2 rounded-full bg-white/10 py-1 pl-1 pr-3 text-xs font-medium uppercase tracking-wider text-brand-100 ring-1 ring-white/20"
             >
@@ -60,15 +65,15 @@ const specIcons: Record<
               >
                 ГМ
               </span>
-              <span>{school.city} · от 1957</span>
+              <span>{school.shortName} · {school.city} · от 1957</span>
             </p>
             <h1
               class="mt-3 font-display leading-[1.05] tracking-tight text-3xl sm:text-4xl md:text-5xl lg:text-6xl md:mt-5"
             >
-              {school.name}
+              {school.taglines.primary}
             </h1>
             <p class="mt-6 text-lg text-brand-50 sm:text-xl">
-              {school.taglines.primary}
+              {school.taglines.secondary}
             </p>
             <p class="mt-3 text-sm italic text-brand-100">
               „{school.taglines.horace}“
@@ -190,7 +195,7 @@ const specIcons: Record<
                   <line x1="200" y1="380" x2="200" y2="368" />
                   <line x1="20" y1="200" x2="32" y2="200" />
                 </g>
-                {/* Plovdiv/Pleven north-marker amber dot */}
+                {/* North-marker amber dot */}
                 <circle cx="200" cy="20" r="4" fill="#eab308" />
                 {/* Small "Плевен" inscription along bottom */}
                 <text
@@ -249,37 +254,48 @@ const specIcons: Record<
       </div>
     </section>
 
-    {/* Кои сме ние */}
+    {/* Актуално — announcement strip */}
     <section class="container py-16 sm:py-20">
-      <div class="grid gap-10 lg:grid-cols-3 lg:gap-12">
-        <div class="lg:col-span-1">
+      <div class="flex flex-wrap items-end justify-between gap-4">
+        <div>
           <p class="text-sm font-semibold uppercase tracking-wider text-brand-700">
-            Кои сме ние
+            Актуално
           </p>
           <h2 class="mt-3 font-display text-3xl font-bold sm:text-4xl">
-            Училище с традиции и поглед напред
+            Новини и събития, които не бива да пропускате
           </h2>
         </div>
-        <div class="space-y-4 text-base leading-relaxed text-slate-700 lg:col-span-2">
-          <p>
-            {school.name} в {school.city} съчетава дългогодишен опит в подготовката
-            по математика и природни науки със съвременни профили в областта на
-            информационните технологии и инженерството.
-          </p>
-          <p>
-            Учениците ни се развиват в среда, която насърчава любопитството,
-            аналитичното мислене и работата в екип. Гордеем се с успехите им на
-            национални и международни състезания, както и с реализацията им във
-            водещи университети.
-          </p>
-          <p class="font-medium text-brand-700">
-            {school.taglines.motto}
-          </p>
-        </div>
+      </div>
+      <div class="mt-10 grid gap-6 md:grid-cols-3">
+        {
+          announcements.map((item) => (
+            <AnnouncementCard announcement={item} />
+          ))
+        }
       </div>
     </section>
 
-    {/* Specializations */}
+    {/* Защо да избереш нас? */}
+    <section class="bg-brand-700 text-white">
+      <div class="container py-14 text-center sm:py-16">
+        <p class="text-sm font-semibold uppercase tracking-wider text-brand-100">
+          Защо да избереш нас?
+        </p>
+        <h2
+          class="mx-auto mt-4 max-w-4xl font-display text-2xl font-bold leading-tight sm:text-3xl md:text-4xl"
+        >
+          {school.taglines.motto}
+        </h2>
+        <a
+          href="/za-nas"
+          class="mt-8 inline-flex items-center justify-center rounded-md bg-accent-500 px-6 py-3 text-sm font-semibold text-slate-900 transition hover:bg-accent-600 focus-visible:ring-offset-brand-700"
+        >
+          Педагогически състав 2025/2026
+        </a>
+      </div>
+    </section>
+
+    {/* Профили */}
     <section class="bg-slate-50 py-16 sm:py-20">
       <div class="container">
         <div class="mx-auto max-w-2xl text-center">
@@ -287,7 +303,7 @@ const specIcons: Record<
             Профили
           </p>
           <h2 class="mt-3 font-display text-3xl font-bold sm:text-4xl">
-            Какво учим при нас
+            Разгледайте нашите профилирани паралелки
           </h2>
           <p class="mt-4 text-slate-600">
             Четири профила, които отварят врати към инженерството, природните
@@ -317,88 +333,201 @@ const specIcons: Record<
       </div>
     </section>
 
-    {/* Latest news */}
+    {/* Features — team & students */}
     <section class="container py-16 sm:py-20">
-      <div class="flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <p class="text-sm font-semibold uppercase tracking-wider text-brand-700">
-            Новини
+      <div class="grid gap-6 md:grid-cols-2">
+        <div class="rounded-2xl bg-white p-8 ring-1 ring-slate-200 shadow-sm">
+          <p class="font-display text-4xl font-bold text-brand-700">
+            {school.stats.teachers}+
           </p>
-          <h2 class="mt-3 font-display text-3xl font-bold sm:text-4xl">
-            Последно от училището
-          </h2>
+          <p class="mt-1 text-sm font-semibold uppercase tracking-wider text-slate-500">
+            Специалисти
+          </p>
+          <p class="mt-4 leading-relaxed text-slate-700">
+            {school.features.teamBlurb}
+          </p>
         </div>
-        <a
-          href="/novini"
-          class="text-sm font-semibold text-brand-700 hover:text-brand-900"
-        >
-          Всички новини →
-        </a>
-      </div>
-      <div class="mt-10 grid gap-6 md:grid-cols-3">
-        {
-          latestNews.map((item) => (
-            <article class="flex h-full flex-col rounded-xl border border-slate-200 bg-white p-6 transition hover:border-brand-500 hover:shadow-sm">
-              {item.kind === "upcoming-event" && (
-                <span class="mb-3 inline-flex w-fit items-center gap-1.5 rounded-full bg-accent-50 px-2.5 py-1 text-xs font-semibold text-accent-700 ring-1 ring-accent-200">
-                  <span
-                    class="h-1.5 w-1.5 rounded-full bg-accent-500"
-                    aria-hidden="true"
-                  />
-                  Предстоящо събитие
-                </span>
-              )}
-              <div class="flex items-center gap-2 text-xs text-slate-500">
-                <time datetime={item.date}>
-                  {dateFormatter.format(new Date(item.date))}
-                </time>
-                {item.category && (
-                  <>
-                    <span aria-hidden="true">•</span>
-                    <span class="font-medium text-brand-700">
-                      {item.category}
-                    </span>
-                  </>
-                )}
-              </div>
-              <h3 class="mt-3 text-lg font-semibold text-slate-900">
-                {item.title}
-              </h3>
-              <p class="mt-2 flex-1 text-sm leading-relaxed text-slate-600">
-                {item.excerpt}
-              </p>
-              <a
-                href="/novini"
-                class="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-brand-700 hover:text-brand-900"
-                aria-label={`Виж повече за: ${item.title}`}
-              >
-                Прочети повече <span aria-hidden="true">→</span>
-              </a>
-            </article>
-          ))
-        }
+        <div class="rounded-2xl bg-white p-8 ring-1 ring-slate-200 shadow-sm">
+          <p class="font-display text-4xl font-bold text-brand-700">
+            {school.stats.students}+
+          </p>
+          <p class="mt-1 text-sm font-semibold uppercase tracking-wider text-slate-500">
+            Ученици
+          </p>
+          <p class="mt-4 leading-relaxed text-slate-700">
+            {school.features.studentsBlurb}
+          </p>
+        </div>
       </div>
     </section>
 
-    {/* CTA band */}
-    <section class="bg-brand-700 text-white">
-      <div
-        class="container flex flex-col items-start gap-6 py-12 sm:flex-row sm:items-center sm:justify-between sm:py-16"
-      >
+    {/* Latest news */}
+    <section class="bg-slate-50 py-16 sm:py-20">
+      <div class="container">
+        <div class="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p class="text-sm font-semibold uppercase tracking-wider text-brand-700">
+              Новини
+            </p>
+            <h2 class="mt-3 font-display text-3xl font-bold sm:text-4xl">
+              Последно от училището
+            </h2>
+          </div>
+          <a
+            href="/novini"
+            class="text-sm font-semibold text-brand-700 hover:text-brand-900"
+          >
+            Всички новини →
+          </a>
+        </div>
+        <div class="mt-10 grid gap-6 md:grid-cols-3">
+          {
+            latestNews.map((item) => (
+              <article class="flex h-full flex-col rounded-xl border border-slate-200 bg-white p-6 transition hover:border-brand-500 hover:shadow-sm">
+                {item.kind === "upcoming-event" && (
+                  <span class="mb-3 inline-flex w-fit items-center gap-1.5 rounded-full bg-accent-50 px-2.5 py-1 text-xs font-semibold text-accent-700 ring-1 ring-accent-200">
+                    <span
+                      class="h-1.5 w-1.5 rounded-full bg-accent-500"
+                      aria-hidden="true"
+                    />
+                    Предстоящо събитие
+                  </span>
+                )}
+                <div class="flex items-center gap-2 text-xs text-slate-500">
+                  <time datetime={item.date}>
+                    {dateFormatter.format(new Date(item.date))}
+                  </time>
+                  {item.category && (
+                    <>
+                      <span aria-hidden="true">•</span>
+                      <span class="font-medium text-brand-700">
+                        {item.category}
+                      </span>
+                    </>
+                  )}
+                </div>
+                <h3 class="mt-3 text-lg font-semibold text-slate-900">
+                  {item.title}
+                </h3>
+                <p class="mt-2 flex-1 text-sm leading-relaxed text-slate-600">
+                  {item.excerpt}
+                </p>
+                <a
+                  href="/novini"
+                  class="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-brand-700 hover:text-brand-900"
+                  aria-label={`Виж повече за: ${item.title}`}
+                >
+                  Прочети повече <span aria-hidden="true">→</span>
+                </a>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    {/* Контакти и местоположение */}
+    <section class="container py-16 sm:py-20">
+      <div class="mx-auto max-w-2xl text-center">
+        <p class="text-sm font-semibold uppercase tracking-wider text-brand-700">
+          Контакти
+        </p>
+        <h2 class="mt-3 font-display text-3xl font-bold sm:text-4xl">
+          Свържете се с нас
+        </h2>
+      </div>
+      <div class="mt-12 grid gap-8 lg:grid-cols-2">
+        {/* Details */}
+        <div class="rounded-2xl bg-white p-8 ring-1 ring-slate-200 shadow-sm">
+          <dl class="space-y-5 text-sm">
+            <div>
+              <dt class="font-semibold uppercase tracking-wider text-slate-500">
+                Адрес
+              </dt>
+              <dd class="mt-1 text-base text-slate-800">
+                {school.contact.address}
+              </dd>
+            </div>
+            <div>
+              <dt class="font-semibold uppercase tracking-wider text-slate-500">
+                Канцелария
+              </dt>
+              <dd class="mt-1 text-base text-slate-800">
+                {school.contact.office.join(", ")}
+              </dd>
+            </div>
+            <div>
+              <dt class="font-semibold uppercase tracking-wider text-slate-500">
+                Директор
+              </dt>
+              <dd class="mt-1 text-base text-slate-800">
+                {school.contact.director}
+              </dd>
+            </div>
+            <div>
+              <dt class="font-semibold uppercase tracking-wider text-slate-500">
+                Заместник-директор
+              </dt>
+              <dd class="mt-1 text-base text-slate-800">
+                {school.contact.deputyDirector}
+              </dd>
+            </div>
+            <div>
+              <dt class="font-semibold uppercase tracking-wider text-slate-500">
+                Имейл
+              </dt>
+              <dd class="mt-1 text-base">
+                <a
+                  href={`mailto:${school.contact.email}`}
+                  class="text-brand-700 hover:text-brand-900"
+                >
+                  {school.contact.email}
+                </a>
+              </dd>
+            </div>
+            <div>
+              <dt class="font-semibold uppercase tracking-wider text-slate-500">
+                Работно време
+              </dt>
+              <dd class="mt-1 text-base text-slate-800">
+                {school.contact.hours}
+              </dd>
+            </div>
+          </dl>
+        </div>
+
+        {/* Map + transport */}
         <div>
-          <h2 class="font-display text-2xl font-bold sm:text-3xl">
-            Имате въпрос към училището?
-          </h2>
-          <p class="mt-2 text-brand-100">
-            Свържете се с нас — отговаряме в работно време.
+          <MapEmbed query={mapQuery} title={`Местоположение на ${school.shortName}`} />
+          <p class="mt-4 text-sm text-slate-600">
+            <span class="font-semibold text-slate-700">Градски транспорт:</span>
+            {" "}тролейбус {school.transport.trolleybus.join(", ")} · автобус{" "}
+            {school.transport.bus.join(", ")}
           </p>
         </div>
-        <a
-          href="/kontakti"
-          class="inline-flex items-center justify-center rounded-md bg-accent-500 px-6 py-3 text-sm font-semibold text-slate-900 transition hover:bg-accent-600 focus-visible:ring-offset-brand-700"
-        >
-          Към контактите
-        </a>
+      </div>
+    </section>
+
+    {/* За нас — история */}
+    <section class="bg-slate-50 py-16 sm:py-20">
+      <div class="container grid gap-10 lg:grid-cols-2 lg:gap-16">
+        <div>
+          <p class="text-sm font-semibold uppercase tracking-wider text-brand-700">
+            За нас
+          </p>
+          <h2 class="mt-3 font-display text-3xl font-bold sm:text-4xl">
+            Където талантът среща знанието
+          </h2>
+          <p class="mt-5 text-base leading-relaxed text-slate-700">
+            {school.about.intro}
+          </p>
+          <p class="mt-4 text-base font-medium text-brand-700">
+            {school.about.closingTagline}
+          </p>
+        </div>
+        <div>
+          <Timeline items={school.history} />
+        </div>
       </div>
     </section>
   </main>

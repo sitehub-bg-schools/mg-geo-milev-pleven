@@ -1,0 +1,28 @@
+---
+/**
+ * Timeline — vertical year/event list for the school history block.
+ *
+ * Driven by `school.history` (year + event). Purely presentational; the
+ * connecting rail and node dots are decorative (aria-hidden).
+ */
+export interface Props {
+  items: readonly { year: string | number; event: string }[];
+}
+
+const { items } = Astro.props;
+---
+
+<ol class="relative space-y-8 border-l border-slate-200 pl-8">
+  {
+    items.map((item) => (
+      <li class="relative">
+        <span
+          class="absolute -left-[2.1rem] top-1 inline-flex h-4 w-4 items-center justify-center rounded-full bg-brand-700 ring-4 ring-brand-50"
+          aria-hidden="true"
+        />
+        <p class="font-display text-lg font-bold text-brand-700">{item.year}</p>
+        <p class="mt-1 text-base leading-relaxed text-slate-700">{item.event}</p>
+      </li>
+    ))
+  }
+</ol>
